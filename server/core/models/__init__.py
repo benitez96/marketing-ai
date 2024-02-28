@@ -1,5 +1,5 @@
-from typing import List, Optional
-from sqlmodel import Field, Relationship, SQLModel
+from typing import Optional, Union
+from sqlmodel import Column, Field, Relationship, SQLModel, JSON
 from datetime import datetime
 
 
@@ -13,7 +13,7 @@ class User(BaseModel, table=True):
     password: str
     disabled: Optional[bool] = Field(default=False)
 
-    chats: List["Chat"] = Relationship(back_populates="user")
+    chats: list["Chat"] = Relationship(back_populates="user")
 
 
 class Chat(BaseModel, table=True):
@@ -22,13 +22,24 @@ class Chat(BaseModel, table=True):
     user_id: int = Field(foreign_key="user.id")
 
     user: User = Relationship(back_populates="chats")
-    prompts: List["Prompts"] = Relationship(back_populates="chat")
+    config: "ChatConfig" = Relationship(back_populates="chat")
+    prompts: list["Prompts"] = Relationship(back_populates="chat")
+
+class ChatConfig(BaseModel, table=True):
+
+    chat_id: int = Field(foreign_key="chat.id")
+    chat: Chat = Relationship(back_populates="config")
+
+    field: str
+    value: str
 
 
 class Prompts(BaseModel, table=True):
-    tokens: int
+    input_tokens: int
+    output_tokens: int
     prompt: str
     response: str
+    visible: bool = Field(default=True)
 
     # Relations
     chat_id: int = Field(foreign_key="chat.id")
@@ -46,10 +57,12 @@ class AIModel(BaseModel, table=True):
     display_name: str
     description: Optional[str] = None
 
-    token_price: float
+    input_token_price: float
+    output_token_price: float
+
     public_price: float
 
-    prompts: List["Prompts"] = Relationship(back_populates="ai_model")
+    prompts: list["Prompts"] = Relationship(back_populates="ai_model")
 
 
 class Product(BaseModel, table=True):
@@ -58,6 +71,8 @@ class Product(BaseModel, table=True):
     price: float
     duration: int
 
+    input_config_fields: list["InputConfigField"] = Relationship(back_populates="product")
+
 
 class Subscription(BaseModel, table=True):
     user_id: int = Field(foreign_key="user.id")
@@ -65,3 +80,19 @@ class Subscription(BaseModel, table=True):
     start_date: datetime = datetime.now()
     end_date: datetime
     active: bool = True
+
+
+class InputConfigField(BaseModel, table=True):
+    name: str
+    type: str
+    description: Optional[str] = None
+    default: Optional[str] = None
+    required: bool = False
+    disabled: bool = False
+    label: str
+    values: Optional[Union[list[dict], dict]] = Field(default={}, sa_column=Column(JSON))
+    placeholder: Optional[str] = None
+
+
+    product_id: int = Field(foreign_key="product.id")
+    product: Product = Relationship(back_populates="input_config_fields")
