@@ -1,10 +1,18 @@
 from sqlmodel import Session, SQLModel, create_engine
 
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+from core.settings import get_settings
 
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
+
+settings = get_settings()
+
+if settings.sql_engine == "postgresql":
+    # db_connection_string = f"postgresql://{settings.postgres_user}:{settings.postgres_password}@postgres/{settings.postgres_db}"
+    db_connection_string = f"postgresql://{settings.postgres_user}:{settings.postgres_password}@db/{settings.postgres_db}"
+else:
+    db_connection_string = "sqlite:///database.db"
+
+
+engine = create_engine(db_connection_string, echo=True)
 
 
 def create_db_and_tables():
