@@ -22,7 +22,6 @@ class UserRepository(BaseRepository):
         return self.db.get(User, user_id)
 
     def subscribe(self, user_id: int, product_id: int) -> Subscription:
-
         product = self.db.get(Product, product_id)
 
         if not product:
@@ -31,7 +30,7 @@ class UserRepository(BaseRepository):
         subscription = Subscription(
             user_id=user_id,
             product_id=product_id,
-            end_date=datetime.now() + timedelta(days=product.duration)
+            end_date=datetime.now() + timedelta(days=product.duration),
         )
 
         self.db.add(subscription)

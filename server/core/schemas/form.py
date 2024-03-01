@@ -1,4 +1,3 @@
-
 from typing import Optional, Union
 from sqlmodel import SQLModel
 

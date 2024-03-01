@@ -27,8 +27,8 @@ class Chat(BaseModel, table=True):
     config: "ChatConfig" = Relationship(back_populates="chat")
     prompts: list["Prompt"] = Relationship(back_populates="chat")
 
-class ChatConfig(BaseModel, table=True):
 
+class ChatConfig(BaseModel, table=True):
     chat_id: int = Field(foreign_key="chat.id")
     chat: Chat = Relationship(back_populates="config")
 
@@ -73,7 +73,9 @@ class Product(BaseModel, table=True):
     price: float
     duration: int
 
-    input_config_fields: list["InputConfigField"] = Relationship(back_populates="product")
+    input_config_fields: list["InputConfigField"] = Relationship(
+        back_populates="product"
+    )
 
     suscriptions: list["Subscription"] = Relationship(back_populates="product")
 
@@ -98,9 +100,10 @@ class InputConfigField(BaseModel, table=True):
     required: bool = False
     disabled: bool = False
     label: str
-    values: Optional[Union[list[dict], dict]] = Field(default={}, sa_column=Column(JSON))
+    values: Optional[Union[list[dict], dict]] = Field(
+        default={}, sa_column=Column(JSON)
+    )
     placeholder: Optional[str] = None
-
 
     product_id: int = Field(foreign_key="product.id")
     product: Product = Relationship(back_populates="input_config_fields")

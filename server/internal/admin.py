@@ -7,17 +7,15 @@ from infrastructure.repositories.user_repository import UserRepository
 
 
 class ChatView(ModelView):
-
-
-    exclude_fields_from_create = ['config', 'prompts']
-    fields = ['name', 'description', "user"]
+    exclude_fields_from_create = ["config", "prompts"]
+    fields = ["name", "description", "user"]
 
 
 def mount_admin(app):
     admin = Admin(
-        engine, 
+        engine,
         title="Marketing AI admin",
-        logo_url="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+        logo_url="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png",
     )
 
     # Add view
@@ -27,7 +25,7 @@ def mount_admin(app):
     admin.add_view(ModelView(models.ChatConfig, icon="fa fa-comment"))
     admin.add_view(ModelView(models.Prompt, icon="fa-solid fa-terminal"))
     admin.add_view(ModelView(models.Product, icon="fa-brands fa-product-hunt"))
-    admin.add_view(ModelView( models.InputConfigField, icon="fa fa-cog"))
+    admin.add_view(ModelView(models.InputConfigField, icon="fa fa-cog"))
     admin.add_view(ModelView(models.AIModel, icon="fa-solid fa-brain"))
 
     # Mount admin to your app

@@ -9,7 +9,9 @@ from core.services.form_service import FormService
 router = APIRouter()
 
 
-@router.get("/", response_model=list[FormRead], summary="Form fields for the current user")
+@router.get(
+    "/", response_model=list[FormRead], summary="Form fields for the current user"
+)
 async def read_users_me(
     user: Annotated[User, Depends(get_current_user)],
     form_service: FormService = Depends(FormService),

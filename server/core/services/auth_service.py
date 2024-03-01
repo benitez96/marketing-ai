@@ -23,10 +23,11 @@ credentials_exception = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
+
 async def get_current_user(
-        token: Annotated[str, Depends(oauth2_scheme)], 
-        user_repository: UserRepository = Depends(get_repository(UserRepository))
-    ) -> User:
+    token: Annotated[str, Depends(oauth2_scheme)],
+    user_repository: UserRepository = Depends(get_repository(UserRepository)),
+) -> User:
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("user_id")

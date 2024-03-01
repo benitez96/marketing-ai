@@ -4,7 +4,6 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-
     sql_engine: str
 
     jwt_secret_key: str
@@ -14,7 +13,6 @@ class Settings(BaseSettings):
     postgres_db: str
     postgres_user: str
     postgres_password: str
-
 
 
 @lru_cache
