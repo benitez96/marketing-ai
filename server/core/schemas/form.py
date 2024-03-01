@@ -8,7 +8,7 @@ class FormRead(SQLModel):
     description: Optional[str] = None
     default: Optional[str] = None
     required: bool = False
-    disabled: bool = False
+    enabled: bool = False
     label: str
     values: Optional[Union[list[dict], dict]]
     placeholder: Optional[str] = None

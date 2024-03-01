@@ -25,7 +25,8 @@ def mount_admin(app):
     admin.add_view(ModelView(models.ChatConfig, icon="fa fa-comment"))
     admin.add_view(ModelView(models.Prompt, icon="fa-solid fa-terminal"))
     admin.add_view(ModelView(models.Product, icon="fa-brands fa-product-hunt"))
-    admin.add_view(ModelView(models.InputConfigField, icon="fa fa-cog"))
+    admin.add_view(ModelView(models.Form, icon="fa fa-cog"))
+    admin.add_view(ModelView(models.Input, icon="fa fa-cog"))
     admin.add_view(ModelView(models.AIModel, icon="fa-solid fa-brain"))
 
     # Mount admin to your app

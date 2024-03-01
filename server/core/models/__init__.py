@@ -1,6 +1,7 @@
 from typing import Optional, Union
 from sqlmodel import Column, Field, Relationship, SQLModel, JSON
 from datetime import datetime
+from enum import Enum
 
 
 class BaseModel(SQLModel):
@@ -11,7 +12,7 @@ class User(BaseModel, table=True):
     username: str = Field(index=True, unique=True)
     email: str
     password: str
-    disabled: Optional[bool] = Field(default=False)
+    active: Optional[bool] = Field(default=False)
 
     chats: list["Chat"] = Relationship(back_populates="user")
 
@@ -69,13 +70,13 @@ class AIModel(BaseModel, table=True):
 
 class Product(BaseModel, table=True):
     name: str
+    display_name: str
     description: Optional[str] = None
     price: float
     duration: int
 
-    input_config_fields: list["InputConfigField"] = Relationship(
-        back_populates="product"
-    )
+    form_id: Optional[int] = Field(foreign_key="form.id", default=None)
+    form: Optional["Form"] = Relationship(back_populates="products")
 
     suscriptions: list["Subscription"] = Relationship(back_populates="product")
 
@@ -92,18 +93,48 @@ class Subscription(BaseModel, table=True):
     product: Product = Relationship(back_populates="suscriptions")
 
 
-class InputConfigField(BaseModel, table=True):
+class FormInputLink(SQLModel, table=True):
+    form_id: Optional[int] = Field(
+        default=None, foreign_key="form.id", primary_key=True
+    )
+    input_id: Optional[int] = Field(
+        default=None, foreign_key="input.id", primary_key=True
+    )
+
+
+class Form(BaseModel, table=True):
     name: str
-    type: str
+    display_name: str
+    # title: Optional[str] = None
+    description: Optional[str] = None
+
+    products: Optional[list["Product"]] = Relationship(back_populates="form")
+
+    fields: Optional[list["Input"]] = Relationship(
+        back_populates="forms", link_model=FormInputLink
+    )
+
+
+class InputType(str, Enum):
+    text = "text"
+    select = "select"
+    checkbox = "checkbox"
+    radio = "radio"
+
+
+class Input(BaseModel, table=True):
+    name: str
+    type: InputType
     description: Optional[str] = None
     default: Optional[str] = None
     required: bool = False
-    disabled: bool = False
+    enabled: bool = False
     label: str
     values: Optional[Union[list[dict], dict]] = Field(
         default={}, sa_column=Column(JSON)
     )
     placeholder: Optional[str] = None
 
-    product_id: int = Field(foreign_key="product.id")
-    product: Product = Relationship(back_populates="input_config_fields")
+    forms: Optional[list[Form]] = Relationship(
+        back_populates="fields", link_model=FormInputLink
+    )
