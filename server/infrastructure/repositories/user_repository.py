@@ -1,5 +1,6 @@
+from datetime import datetime, timedelta
 from sqlmodel import select
-from core.models import User
+from core.models import Product, Subscription, User
 from .base import BaseRepository
 
 
@@ -19,3 +20,21 @@ class UserRepository(BaseRepository):
 
     def get_user(self, user_id: int | str) -> User | None:
         return self.db.get(User, user_id)
+
+    def subscribe(self, user_id: int, product_id: int) -> Subscription:
+
+        product = self.db.get(Product, product_id)
+
+        if not product:
+            raise ValueError("Product not found")
+
+        subscription = Subscription(
+            user_id=user_id,
+            product_id=product_id,
+            end_date=datetime.now() + timedelta(days=product.duration)
+        )
+
+        self.db.add(subscription)
+        self.db.commit()
+
+        return subscription

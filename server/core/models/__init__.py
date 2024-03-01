@@ -15,6 +15,8 @@ class User(BaseModel, table=True):
 
     chats: list["Chat"] = Relationship(back_populates="user")
 
+    suscription: "Subscription" = Relationship(back_populates="users")
+
 
 class Chat(BaseModel, table=True):
     name: str
@@ -23,7 +25,7 @@ class Chat(BaseModel, table=True):
 
     user: User = Relationship(back_populates="chats")
     config: "ChatConfig" = Relationship(back_populates="chat")
-    prompts: list["Prompts"] = Relationship(back_populates="chat")
+    prompts: list["Prompt"] = Relationship(back_populates="chat")
 
 class ChatConfig(BaseModel, table=True):
 
@@ -34,7 +36,7 @@ class ChatConfig(BaseModel, table=True):
     value: str
 
 
-class Prompts(BaseModel, table=True):
+class Prompt(BaseModel, table=True):
     input_tokens: int
     output_tokens: int
     prompt: str
@@ -62,7 +64,7 @@ class AIModel(BaseModel, table=True):
 
     public_price: float
 
-    prompts: list["Prompts"] = Relationship(back_populates="ai_model")
+    prompts: list["Prompt"] = Relationship(back_populates="ai_model")
 
 
 class Product(BaseModel, table=True):
@@ -73,13 +75,19 @@ class Product(BaseModel, table=True):
 
     input_config_fields: list["InputConfigField"] = Relationship(back_populates="product")
 
+    suscriptions: list["Subscription"] = Relationship(back_populates="product")
+
 
 class Subscription(BaseModel, table=True):
-    user_id: int = Field(foreign_key="user.id")
-    product_id: int = Field(foreign_key="product.id")
     start_date: datetime = datetime.now()
     end_date: datetime
     active: bool = True
+
+    user_id: int = Field(foreign_key="user.id")
+    users: User = Relationship(back_populates="suscription")
+
+    product_id: int = Field(foreign_key="product.id")
+    product: Product = Relationship(back_populates="suscriptions")
 
 
 class InputConfigField(BaseModel, table=True):
