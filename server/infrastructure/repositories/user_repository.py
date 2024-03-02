@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from fastapi import HTTPException
 from sqlmodel import select
 from core.models import Product, Subscription, User
 from .base import BaseRepository
@@ -22,10 +23,10 @@ class UserRepository(BaseRepository):
         return self.db.get(User, user_id)
 
     def subscribe(self, user_id: int, product_id: int) -> Subscription:
-        product = self.db.get(Product, product_id)
 
+        product = self.db.get(Product, product_id)
         if not product:
-            raise ValueError("Product not found")
+            raise HTTPException(status_code=400, detail="Product doesn't exist")
 
         subscription = Subscription(
             user_id=user_id,
