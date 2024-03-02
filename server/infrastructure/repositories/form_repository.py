@@ -1,10 +1,16 @@
+from typing import Type
 from fastapi import HTTPException
 from sqlmodel import select
-from core.models import Input, Product, User
+from core.models import Form, Input, Product, User
 from .base import BaseRepository
 
 
-class FormRepository(BaseRepository):
+class FormRepository(BaseRepository[Form]):
+
+    @property
+    def model_type(self) -> Type[Form]:
+        return Form
+
     def get_form(self, user: User) -> list[Input]:
         if not user.suscription:
             self.get_free_form()
