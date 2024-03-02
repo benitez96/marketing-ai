@@ -22,7 +22,6 @@ class PromptRead(SQLModel):
 class ChatCreate(SQLModel):
     name: str
     description: Optional[str] = None
-    config: Optional[dict[str, str]]
 
 
 class ChatUpdate(SQLModel):

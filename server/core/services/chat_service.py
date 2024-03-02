@@ -20,13 +20,10 @@ class ChatService:
 
     def create_chat(self, user: User, chat: ChatCreate) -> ChatReadDetail:
         new_chat = Chat(**chat.model_dump())
-        if chat.config:
-            for k, v in chat.config.items():
-                new_chat.configs.append(ChatConfig(field=k, value=v))
 
         result = self.chat_repository.create_chat(user=user, chat=new_chat)
 
-        return ChatReadDetail(**result.model_dump(), config=chat.config)
+        return ChatReadDetail(**result.model_dump())
 
     def update_chat(self, user: User, chat_id: int, chat: ChatUpdate) -> ChatReadDetail:
 
