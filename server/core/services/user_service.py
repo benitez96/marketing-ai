@@ -72,6 +72,3 @@ class UserService:
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
-
-    def subscribe(self, user_id: int, product_id: int):
-        return self.user_repository.subscribe(user_id, product_id)

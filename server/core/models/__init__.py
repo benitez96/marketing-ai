@@ -25,13 +25,13 @@ class Chat(BaseModel, table=True):
     user_id: int = Field(foreign_key="user.id")
 
     user: User = Relationship(back_populates="chats")
-    config: "ChatConfig" = Relationship(back_populates="chat")
+    configs: list["ChatConfig"] = Relationship(back_populates="chat")
     prompts: list["Prompt"] = Relationship(back_populates="chat")
 
 
 class ChatConfig(BaseModel, table=True):
     chat_id: int = Field(foreign_key="chat.id")
-    chat: Chat = Relationship(back_populates="config")
+    chat: Chat = Relationship(back_populates="configs")
 
     field: str
     value: str

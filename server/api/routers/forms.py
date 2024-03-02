@@ -18,6 +18,7 @@ async def read_users_me(
 ):
     return form_service.get_form(user)
 
+
 @router.get("/free", summary="Get free form fields")
 async def get_free_form_fields(
     form_service: FormService = Depends(FormService),
