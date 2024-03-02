@@ -23,3 +23,9 @@ class ChatCreate(SQLModel):
     name: str
     description: Optional[str] = None
     config: Optional[dict[str, str]]
+
+
+class ChatUpdate(SQLModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    config: Optional[dict[str, str]] = None
