@@ -12,7 +12,7 @@ class User(BaseModel, table=True):
     username: str = Field(index=True, unique=True)
     email: str
     password: str
-    active: Optional[bool] = Field(default=False)
+    active: Optional[bool] = Field(default=True)
 
     chats: list["Chat"] = Relationship(back_populates="user")
 
@@ -74,6 +74,8 @@ class Product(BaseModel, table=True):
     description: Optional[str] = None
     price: float
     duration: int
+
+    is_published: bool = False
 
     form_id: Optional[int] = Field(foreign_key="form.id", default=None)
     form: Optional["Form"] = Relationship(back_populates="products")

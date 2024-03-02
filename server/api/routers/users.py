@@ -36,12 +36,3 @@ async def read_users_me(
     user: Annotated[User, Depends(get_current_user)],
 ):
     return user
-
-
-@router.post("/me/subscribe", summary="Subscribe to a product")
-async def subscribe_to_product(
-    user: Annotated[User, Depends(get_current_user)],
-    product_id: int = Body(..., embed=True),
-    user_service: UserService = Depends(UserService),
-):
-    return user_service.subscribe(user_id=user.id, product_id=product_id)

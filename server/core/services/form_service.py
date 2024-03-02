@@ -10,5 +10,9 @@ class FormService:
     ) -> None:
         self.form_repository = form_repository
 
-    def get_form(self, user: User) -> list[Input]:
+    def get_form(self, user: User = None) -> list[Input]:
+
+        if not user:
+            return self.form_repository.get_free_form()
+
         return self.form_repository.get_form(user)
