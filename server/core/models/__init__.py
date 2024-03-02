@@ -22,11 +22,12 @@ class User(BaseModel, table=True):
 class Chat(BaseModel, table=True):
     name: str
     description: Optional[str] = None
-    user_id: int = Field(foreign_key="user.id")
 
+    user_id: int = Field(foreign_key="user.id")
     user: User = Relationship(back_populates="chats")
-    configs: list["ChatConfig"] = Relationship(back_populates="chat")
-    prompts: list["Prompt"] = Relationship(back_populates="chat")
+
+    configs: Optional[list["ChatConfig"]] = Relationship(back_populates="chat")
+    prompts: Optional[list["Prompt"]] = Relationship(back_populates="chat")
 
 
 class ChatConfig(BaseModel, table=True):

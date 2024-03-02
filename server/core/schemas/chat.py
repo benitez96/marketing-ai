@@ -9,11 +9,17 @@ class ChatRead(SQLModel):
 
 
 class ChatReadDetail(ChatRead):
-    prompts: list["PromptRead"]
-    config: dict[str, str]
+    prompts: Optional[list["PromptRead"]] = []
+    config: Optional[dict[str, str]] = {}
 
 
 class PromptRead(SQLModel):
     id: int
     prompt: str
     response: str
+
+
+class ChatCreate(SQLModel):
+    name: str
+    description: Optional[str] = None
+    config: Optional[dict[str, str]]

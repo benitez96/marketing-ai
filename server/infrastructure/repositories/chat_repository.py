@@ -15,3 +15,12 @@ class ChatRepository(BaseRepository):
             raise HTTPException(status_code=403, detail="User not authorized")
 
         return chat
+
+    def create_chat(self, user: User, chat: Chat) -> Chat:
+        chat.user = user
+
+        self.db.add(chat)
+        self.db.commit()
+        self.db.refresh(chat)
+
+        return chat

@@ -1,7 +1,7 @@
 from fastapi import Depends
 from core.dependencies import get_repository
-from core.models import User, Input
-from core.schemas.chat import ChatReadDetail
+from core.models import Chat, ChatConfig, User, Input
+from core.schemas.chat import ChatCreate, ChatReadDetail
 from infrastructure.repositories.chat_repository import ChatRepository
 
 
@@ -17,3 +17,13 @@ class ChatService:
         config = {config.field: config.value for config in chat.configs}
 
         return ChatReadDetail(**chat.model_dump(), config=config, prompts=chat.prompts)
+
+    def create_chat(self, user: User, chat: ChatCreate) -> ChatReadDetail:
+        new_chat = Chat(**chat.model_dump())
+        if chat.config:
+            for k, v in chat.config.items():
+                new_chat.configs.append(ChatConfig(field=k, value=v))
+
+        result = self.chat_repository.create_chat(user=user, chat=new_chat)
+
+        return ChatReadDetail(**result.model_dump(), config=chat.config)
