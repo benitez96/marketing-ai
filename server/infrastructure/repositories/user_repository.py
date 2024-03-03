@@ -7,7 +7,6 @@ from .base import BaseRepository
 
 
 class UserRepository(BaseRepository[User]):
-
     @property
     def model_type(self) -> Type[User]:
         return User

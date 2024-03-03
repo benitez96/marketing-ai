@@ -6,6 +6,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     sql_engine: str = ""
 
+    gpt_key: str
     jwt_secret_key: str
     algorithm: str
     access_token_expire_minutes: int

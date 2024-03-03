@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Body, Depends
 from core.models import User
-from core.schemas.form import FormRead
+from core.schemas.product import ProductRead
 from core.services.auth_service import get_current_user
 from core.services.product_service import ProductService
 
@@ -9,7 +9,7 @@ from core.services.product_service import ProductService
 router = APIRouter()
 
 
-@router.get("/", response_model=list[FormRead], summary="Get available products")
+@router.get("/", response_model=list[ProductRead], summary="Get available products")
 async def get_products(
     product_service: ProductService = Depends(ProductService),
 ):

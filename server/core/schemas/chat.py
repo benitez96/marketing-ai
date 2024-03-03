@@ -10,7 +10,7 @@ class ChatRead(SQLModel):
 
 class ChatReadDetail(ChatRead):
     prompts: Optional[list["PromptRead"]] = []
-    config: Optional[dict[str, str]] = {}
+    config: dict = {}
 
 
 class PromptRead(SQLModel):
@@ -27,4 +27,4 @@ class ChatCreate(SQLModel):
 class ChatUpdate(SQLModel):
     name: Optional[str] = None
     description: Optional[str] = None
-    config: Optional[dict[str, str]] = None
+    config: Optional[dict] = None

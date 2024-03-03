@@ -6,7 +6,6 @@ from .base import BaseRepository
 
 
 class ChatRepository(BaseRepository[Chat]):
-
     @property
     def model_type(self) -> Type[Chat]:
         return Chat

@@ -35,7 +35,7 @@ class UserService:
 
         user.password = self._get_password_hash(user.password)
 
-        return self.user_repository.create_user(user)
+        return self.user_repository.create(user)
 
     def create_token(self, username: str, password: str):
         user = self._authenticate_user(username, password)

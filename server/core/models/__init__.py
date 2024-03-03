@@ -4,6 +4,24 @@ from datetime import datetime
 from enum import Enum
 
 
+class InputType(str, Enum):
+    text = "text"
+    select = "select"
+    checkbox = "checkbox"
+    radio = "radio"
+
+
+class Source(str, Enum):
+    admin = "admin"
+    user = "user"
+
+
+class Role(str, Enum):
+    system = "system"
+    user = "user"
+    assistant = "assistant"
+
+
 class BaseModel(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True)
 
@@ -26,16 +44,11 @@ class Chat(BaseModel, table=True):
     user_id: int = Field(foreign_key="user.id")
     user: User = Relationship(back_populates="chats")
 
-    configs: Optional[list["ChatConfig"]] = Relationship(back_populates="chat")
+    config: Optional[Union[list[dict], dict]] = Field(
+        default={}, sa_column=Column(JSON)
+    )
+
     prompts: Optional[list["Prompt"]] = Relationship(back_populates="chat")
-
-
-class ChatConfig(BaseModel, table=True):
-    chat_id: int = Field(foreign_key="chat.id")
-    chat: Chat = Relationship(back_populates="configs")
-
-    field: str
-    value: str
 
 
 class Prompt(BaseModel, table=True):
@@ -43,7 +56,7 @@ class Prompt(BaseModel, table=True):
     output_tokens: int
     prompt: str
     response: str
-    visible: bool = Field(default=True)
+    visible: Optional[bool] = Field(default=True)
 
     # Relations
     chat_id: int = Field(foreign_key="chat.id")
@@ -66,7 +79,7 @@ class AIModel(BaseModel, table=True):
 
     public_price: float
 
-    prompts: list["Prompt"] = Relationship(back_populates="ai_model")
+    prompts: Optional[list["Prompt"]] = Relationship(back_populates="ai_model")
 
 
 class Product(BaseModel, table=True):
@@ -113,31 +126,29 @@ class Form(BaseModel, table=True):
 
     products: Optional[list["Product"]] = Relationship(back_populates="form")
 
-    fields: Optional[list["Input"]] = Relationship(
-        back_populates="forms", link_model=FormInputLink
+    inputs: Optional[list["Input"]] = Relationship(
+        back_populates="forms",
+        link_model=FormInputLink,
     )
-
-
-class InputType(str, Enum):
-    text = "text"
-    select = "select"
-    checkbox = "checkbox"
-    radio = "radio"
 
 
 class Input(BaseModel, table=True):
     name: str
-    type: InputType
     description: Optional[str] = None
-    default: Optional[str] = None
+    source: Source
+    role: Role
+    type: InputType
+    default_value: Optional[str] = None
+    label: Optional[str] = None
+    placeholder: Optional[str] = None
     required: bool = False
     enabled: bool = False
-    label: str
+    priority: Optional[int] = None
     values: Optional[Union[list[dict], dict]] = Field(
         default={}, sa_column=Column(JSON)
     )
-    placeholder: Optional[str] = None
+    template: str = Field(max_length=500)
 
     forms: Optional[list[Form]] = Relationship(
-        back_populates="fields", link_model=FormInputLink
+        back_populates="inputs", link_model=FormInputLink
     )

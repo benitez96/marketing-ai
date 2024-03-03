@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
-class BaseRepository(Generic[ModelType], ABC):
 
+class BaseRepository(Generic[ModelType], ABC):
     def __init__(self, session: Session):
         self.db = session
 

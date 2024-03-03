@@ -6,7 +6,6 @@ from .base import BaseRepository
 
 
 class FormRepository(BaseRepository[Form]):
-
     @property
     def model_type(self) -> Type[Form]:
         return Form
@@ -20,7 +19,17 @@ class FormRepository(BaseRepository[Form]):
         if not product or not product.form or not product.is_published:
             raise HTTPException(status_code=404, detail="Form not found")
 
-        return product.form.inputs.all()
+        statement = select(Input).where(
+            Input.forms.contains(product.form), Input.source == "user"
+        )
+        results = self.db.exec(statement)
+
+        inputs = results.all()
+
+        if not inputs:
+            raise HTTPException(status_code=404, detail="No inputs found")
+
+        return inputs
 
     def get_free_form(self) -> list[Input]:
         statement = select(Product).where(
@@ -32,4 +41,14 @@ class FormRepository(BaseRepository[Form]):
         if not product or not product.form:
             raise HTTPException(status_code=404, detail="Free form not found")
 
-        return product.form.inputs.all()
+        statement = select(Input).where(
+            Input.forms.contains(product.form), Input.source == "user"
+        )
+        results = self.db.exec(statement)
+
+        inputs = results.all()
+
+        if not inputs:
+            raise HTTPException(status_code=404, detail="No inputs found")
+
+        return inputs

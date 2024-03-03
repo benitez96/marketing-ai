@@ -1,63 +1,88 @@
 from fastapi import Depends, HTTPException
+from jinja2 import Template
 from core.dependencies import get_repository
-from core.models import Chat, ChatConfig, User, Input
+from core.models import Chat, Prompt, User, Input
 from core.schemas.chat import ChatCreate, ChatReadDetail, ChatUpdate
+from core.services.gpt_service import OpenAIService
+from core.settings import get_settings
+from infrastructure.repositories.aimodel_repository import AIModelRepository
 from infrastructure.repositories.chat_repository import ChatRepository
-# from infrastructure.repositories.openai_repository import OpenAIRepository
+
+from pprint import pprint as print
+
+from infrastructure.repositories.input_repository import InputRepository
+
+
+settings = get_settings()
 
 
 class ChatService:
     def __init__(
-        self, 
+        self,
         chat_repository: ChatRepository = Depends(get_repository(ChatRepository)),
-        # openai_repository: OpenAIRepository = Depends(get_repository(OpenAIRepository))
+        input_repository: InputRepository = Depends(get_repository(InputRepository)),
+        aimodel_repository: AIModelRepository = Depends(
+            get_repository(AIModelRepository)
+        ),
     ) -> None:
         self.chat_repository = chat_repository
+        self.aimodel_repository = aimodel_repository
+        self.input_repository = input_repository
 
-    def get_chat_detail(self, user: User, chat_id: int) -> ChatReadDetail:
+    def get_chat_detail(self, user: User, chat_id: int) -> Chat:
         chat = self.chat_repository.get(chat_id)
 
         if user.id != chat.user_id:
             raise HTTPException(status_code=403, detail="User not authorized")
 
-        config = {}
-        if chat.configs:
-            config = {config.field: config.value for config in chat.configs}
-
-        return ChatReadDetail(**chat.model_dump(), config=config, prompts=chat.prompts)
+        return chat
 
     def create_chat(self, user: User, chat: ChatCreate) -> Chat:
         new_chat = Chat(**chat.model_dump(), user=user)
         return self.chat_repository.create(new_chat)
 
     def update_chat(self, user: User, chat_id: int, chat: ChatUpdate) -> ChatReadDetail:
-
-
         chat_to_edit = self.chat_repository.get(id=chat_id)
 
         if user.id != chat_to_edit.user_id:
             raise HTTPException(status_code=403, detail="User not authorized")
 
-        new_chat = Chat(**chat.model_dump())
+        return self.chat_repository.update(chat_id, chat)
 
-        if chat.config:
-            for k, v in chat.config.items():
-                new_chat.configs.append(ChatConfig(field=k, value=v))
+    def init_chat(
+        self, user: User, chat_id: int, initial_conf: dict[str, str]
+    ) -> Prompt:
+        chat = self.get_chat_detail(user=user, chat_id=chat_id)
+        chat.config = initial_conf
 
-        result = self.chat_repository.update(chat_id, new_chat)
+        input_model = initial_conf.pop("ai_model")
+        model = self.aimodel_repository.get_by_name(input_model)
+        model_name = model.name or "gpt-3.5-turbo"
+        inputs = self.input_repository.get_form_inputs(user.suscription.product.form)
 
-        return ChatReadDetail(**result.model_dump(), config=chat.config)
+        messages = []
+        for input in inputs:
+            if input.name == "ai_model":
+                continue
+            template = Template(input.template)
+            ctx = (
+                initial_conf
+                if input.source == "user"
+                else {input.name: input.default_value}
+            )
+            print(input.role)
+            messages.append({"role": input.role.value, "content": template.render(ctx)})
 
+        gpt = OpenAIService(
+            settings.gpt_key,
+            model_name,
+        )
 
-    # def init_chat(self, user: User, chat_id: int, initial_conf: dict[str, str]) -> ChatReadDetail:
+        print(messages)
+        prompt = gpt.get_response(messages)
+        db_prompt = Prompt(**prompt.model_dump(), chat=chat, ai_model=model)
+        chat.prompts.append(db_prompt)
 
-    #     chat = self.get_chat_detail(user=user, chat_id=chat_id)
-    #     self.update_chat(user=user, chat_id=chat_id, chat=ChatUpdate(config=initial_conf))
+        self.chat_repository.update(chat_id, chat)
 
-    #     prompt = self.openai_repository.init_chat(config=initial_conf)
-
-    #     chat.prompts.append(prompt)
-
-    #     self.update_chat(chat_id=chat_id, data=chat)
-
-    #     return ChatReadDetail(**chat.model_dump(), config={}, prompts=chat.prompts)
+        return db_prompt
