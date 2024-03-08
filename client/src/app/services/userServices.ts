@@ -5,7 +5,6 @@ import HttpService from 'network/http';
 
 export interface LoginResponse {
     access_token: string;
-    token_type: string;
     success: boolean
 }
 
@@ -23,14 +22,12 @@ export const login = async (user: any): Promise<LoginResponse> => {
             return {
                 success: true,
                 access_token: data.access_token,
-                token_type: data.token_type
             }
         }
         else {
             return {
                 success: false,
                 access_token: '',
-                token_type: ''
             }
         }
     }
@@ -39,7 +36,6 @@ export const login = async (user: any): Promise<LoginResponse> => {
         return {
             success: false,
             access_token: '',
-            token_type: ''
         }
     }
 }
