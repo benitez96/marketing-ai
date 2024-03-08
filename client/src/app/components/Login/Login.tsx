@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { FcGoogle } from 'react-icons/fc'
@@ -9,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { request } from '@/utils/axios';
 import { validationSchema } from '@/schemas'
 import * as userServices from '@/services/userServices'
+import { ILogin } from 'interfaces/user';
 
 const initialValues: any = {
   username: '',
@@ -16,31 +18,26 @@ const initialValues: any = {
 }
 
 export const Login = () => {
-
   const [pswVisible, setPswVisible] = useState(false)
-  //   const { login } = useAuth()
-  //   const { handleLogin } = useContext(AuthContext)
   const router = useRouter()
 
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
   }
 
-  const handleSubmit = async (values: any) => {
-    const { status, data } = await userServices.login(values)
-
-    if (status === 200) {
-      // handleLogin({ token: data.access }) 
-      localStorage.setItem('token', data.access)
-      localStorage.setItem('refresh_token', data.refresh)
-
+  const handleSubmit = async (values: ILogin) => {
+    const loginResponse = await userServices.login(values)
+    if (loginResponse.success) {
       request.interceptors.request.use(
         (config: any) => {
-          config.headers['Authorization'] = `Bearer ${data.access}`
+          config.headers['Authorization'] = `Bearer ${loginResponse.access_token}`
           return config
         },
       )
       router.push('/')
+    }
+    else {
+      alert('Something went wrong')
     }
   }
 
@@ -68,10 +65,10 @@ export const Login = () => {
                   variant="bordered"
                   name="username"
                   type="text"
-                  color={formik.touched.email && formik.errors.email ? "danger" : ""}
+                  color={formik.touched.username && formik.errors.username ? "danger" : ""}
                   placeholder="Username"
-                  validationState={formik.touched.email && formik.errors.email ? "error" : ""}
-                  errorMessage={formik.touched.email && formik.errors.email && formik.errors.email}
+                  validationState={formik.touched.username && formik.errors.username ? "error" : ""}
+                  errorMessage={formik.touched.username && formik.errors.username && formik.errors.username}
                 />
                 <Field
                   as={Input}
@@ -108,11 +105,12 @@ export const Login = () => {
                 <p>Todavia no tenes cuenta?
                   {/* <Link to='/register' className='text-primary'>Registrate</Link> */}
                 </p>
+                <pre>{JSON.stringify(formik, null, 2)}</pre>
               </CardFooter>
 
               <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
                 <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1  `} >
-                  {/* {parseError(login.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."} */}
+                  {"Ha ocurrido un error. Vuelve a intentar mas tarde."}
                 </p>
               </div>
             </Form>

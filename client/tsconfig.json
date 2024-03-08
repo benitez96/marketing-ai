@@ -23,6 +23,7 @@
       "@/utils/*": ["utils/*"],
       "@/styles/*": ["styles/*"],
       "@/services/*": ["services/*"],
+      "@/actions/*": ["actions/*"],
       "@/schemas": ["schemas/index.ts"]
     }
   },
