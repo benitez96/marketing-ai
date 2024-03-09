@@ -18,6 +18,8 @@ const initialValues: any = {
 }
 
 export const Login = () => {
+  const [isError, setIsError] = useState(false)
+
   const [pswVisible, setPswVisible] = useState(false)
   const router = useRouter()
 
@@ -26,6 +28,7 @@ export const Login = () => {
   }
 
   const handleSubmit = async (values: ILogin) => {
+    setIsError(false)
     const loginResponse = await userServices.login(values)
     if (loginResponse.success) {
       request.interceptors.request.use(
@@ -34,10 +37,10 @@ export const Login = () => {
           return config
         },
       )
-      router.push('/')
+      router.push('/dashboard')
     }
     else {
-      alert('Something went wrong')
+      setIsError(true)
     }
   }
 
@@ -105,13 +108,15 @@ export const Login = () => {
                 <p>Todavia no tenes cuenta?
                   {/* <Link to='/register' className='text-primary'>Registrate</Link> */}
                 </p>
-                <pre>{JSON.stringify(formik, null, 2)}</pre>
               </CardFooter>
 
               <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
-                <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1  `} >
-                  {"Ha ocurrido un error. Vuelve a intentar mas tarde."}
-                </p>
+                {
+                  isError &&
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1  `} >
+                    {"Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                  </p>
+                }
               </div>
             </Form>
         }

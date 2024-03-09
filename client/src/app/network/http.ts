@@ -1,17 +1,24 @@
 
-import axios, { AxiosInstance, AxiosResponse, Canceler } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, CancelToken, CancelTokenSource, Canceler } from 'axios';
 
-interface IRequest{
+interface IRequest {
     request: Promise<AxiosResponse<any, any>>
     cancel: Canceler
+}
+
+interface IConfig {
+    method: string
+    url: string
+    headers: any
+    cancelToken: CancelToken
+    data?: any
 }
 
 class HttpService {
     protected baseUrl: string
     protected instance: AxiosInstance
 
-
-    constructor(baseURL = 'https://api.yourdomain.com') {
+    constructor(baseURL = 'http://localhost:8000/api/') {
         this.baseUrl = baseURL;
         this.instance = axios.create({ baseURL: this.baseUrl });
     }
@@ -23,15 +30,14 @@ class HttpService {
         };
     }
 
-    async request(method: string, url: string, data: any, customHeaders = {}) {
+    request(method: string, url: string, data: any = null, customHeaders = {}) {
         const headers = { ...this.defaultHeaders, ...customHeaders };
         const source = axios.CancelToken.source();
 
-        const config = {
+        const config: IConfig = {
             method,
             url,
             headers,
-            data,
             cancelToken: source.token
         };
 
@@ -49,7 +55,7 @@ class HttpService {
         return this.request('get', url, null, customHeaders);
     }
 
-    post<T>(url: string, data: T, customHeaders = {}): Promise<IRequest> {
+    post<T>(url: string, data: T, customHeaders = {}): IRequest {
         return this.request('post', url, data, customHeaders);
     }
 

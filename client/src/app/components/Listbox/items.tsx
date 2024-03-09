@@ -9,7 +9,7 @@ const items = [
         description: "Navigate back to home"
     },
     {
-        key: "/logout",
+        key: "/dashboard/logout",
         label: "Logout",
         icon: <LuLogIn />,
         description: "Leave session"

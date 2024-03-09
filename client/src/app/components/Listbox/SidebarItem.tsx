@@ -12,8 +12,6 @@ interface Props {
 export const SidebarItem = ({ title, url }: Props) => {
     const pathname = usePathname()
 
-    console.log(pathname)
-
     return (
         <Link href={url} role="button" tabIndex={0} className={`flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80  focus:bg-opacity-80   hover:text-blue-900 focus:text-blue-900 ${pathname === url && 'text-blue-900 outline-none bg-opacity-80 bg-blue-50'}`}>
             <div className="grid place-items-center mr-4">
