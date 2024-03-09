@@ -16,18 +16,21 @@ const Sidebar = () => {
                 className='text-lg'
                 aria-label="Dynamic Actions"
             >
-                {(item) => (
-                    <ListboxItem
-                        key={item.key}
-                        color={"default"}
-                        description={item.description}
-                        className={item.key === pathname ? "text-blue-900 outline-none bg-opacity-80 bg-blue-50" : ""}
-                        href={`${item.key}`}
-                        startContent={item.icon}
-                    >
-                        {item.label}
-                    </ListboxItem>
-                )}
+                {
+                    items.map(item => {
+                        return (
+                            <ListboxItem
+                                {...item}
+                                color='default'
+                                className={item.key === pathname ? "text-blue-900 outline-none bg-opacity-80 bg-blue-50" : ""}
+                            >
+                                {item.label}
+                            </ListboxItem>
+                        )
+                    })
+
+
+                }
             </Listbox>
         </ListboxWrapper>
     );

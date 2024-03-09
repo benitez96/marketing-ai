@@ -1,18 +1,34 @@
-import { LuLogIn } from "react-icons/lu";
+import { deleteToken } from "@/actions/auth";
 import { LuHome } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
+
+const logout = async () => {
+    await deleteToken()
+}
+interface SidebarItems {
+    key: string;
+    label: string;
+    startContent: JSX.Element;
+    description: string;
+    href: string;
+    onClick?: () => void;
+}
+
 const items = [
     {
-        key: "/",
+        key: 'home-key',
+        href: "/",
         label: "Home",
-        icon: <LuHome />,
+        startContent: <LuHome />,
         description: "Navigate back to home"
     },
     {
-        key: "/dashboard/logout",
+        key: "logout-key",
         label: "Logout",
-        icon: <LuLogIn />,
-        description: "Leave session"
+        startContent: <LuLogOut />,
+        description: "Leave session",
+        href: "/",
+        onClick: () => logout(),
     },
 ];
 
