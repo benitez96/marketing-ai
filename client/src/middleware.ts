@@ -8,11 +8,16 @@ export function middleware(request: NextRequest) {
     const token = cookies().get(TOKEN_NAME)
 
     if (token !== undefined) {
+        console.log(token)
         request.cookies.set(TOKEN_NAME, token.value)
     }
 
+    if ((request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup') && token !== undefined) {
+        return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+
     if (UNAUTHORIZED_PATHNAMES.includes(request.nextUrl.pathname) && token === undefined) {
-        return NextResponse.redirect(new URL('/signup', request.url))
+        return NextResponse.redirect(new URL('/login', request.url))
     }
 
     return NextResponse.next()
