@@ -31,7 +31,20 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
-
+  # pg-admin
+  pgadmin4:
+    image: elestio/pgadmin
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=1000
+    ports:
+      - 1000:1000
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
 
 volumes:
   postgres_data:
