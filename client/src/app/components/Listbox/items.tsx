@@ -1,6 +1,7 @@
 import { deleteToken } from "@/actions/auth";
 import { LuHome } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
+import { TfiWrite } from "react-icons/tfi";
 
 const logout = async () => {
     await deleteToken()
@@ -17,10 +18,17 @@ interface SidebarItems {
 const items = [
     {
         key: 'home-key',
-        href: "/",
+        href: "/dashboard",
         label: "Home",
         startContent: <LuHome />,
         description: "Navigate back to home"
+    },
+    {
+        key: 'projects-key',
+        href: "/projects",
+        label: "Projects",
+        startContent: <TfiWrite />,
+        description: "History of projects"
     },
     {
         key: "logout-key",
