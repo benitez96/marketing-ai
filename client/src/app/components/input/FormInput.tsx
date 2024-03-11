@@ -4,13 +4,15 @@ import { Types, IFormInput } from "interfaces/form"
 import { RadioInput } from "../Radio/RadioInput"
 import { useRef } from "react";
 
-type Props = IFormInput
+interface Props {
+    input: IFormInput;
+}
 
-export const FormInput = ({ type, description, label, values }: Props) => {
-    switch (type) {
+export const FormInput = ({ input }: Props) => {
+    switch (input.type) {
         case Types.RADIO:
             return (
-                <RadioInput description={description} label={label} values={values}/>
+                <RadioInput name={input.name} description={input.description} label={input.label} values={input.values} />
             )
     }
 }
