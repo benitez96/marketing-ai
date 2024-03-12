@@ -34,7 +34,7 @@ const Sidebar = () => {
                         return (
                             <ListboxItem
                                 {...item}
-
+                                key={item.key}
                                 color='default'
                                 className={`${item.key === pathname ? "text-blue-900 outline-none bg-opacity-80 bg-blue-50" : ""} text-2xl`}
                             >

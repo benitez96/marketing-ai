@@ -16,7 +16,7 @@ export const CreateForm = ({ form }: Props) => {
                     {
                         form.map((input: IFormInput) => {
                             return (
-                                <FormInput input={input} />
+                                <FormInput key={input.name} input={input} />
                             )
                         })
                     }

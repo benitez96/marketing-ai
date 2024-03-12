@@ -8,7 +8,7 @@ const getForm = async () => {
     return response.data
 }
 
-export const GeneratePage = async () => {
+const GeneratePage = async () => {
     const form = await getForm()
     return (
         <div className="rounded-xl m-4 border p-4 w-full bg-white flex flex-col items-center">

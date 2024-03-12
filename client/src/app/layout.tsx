@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-slate-100">
+    <html lang="en" className="bg-slate-100" suppressHydrationWarning={true}>
       <body >
         {children}
       </body>

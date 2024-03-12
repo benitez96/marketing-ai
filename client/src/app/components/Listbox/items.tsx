@@ -25,7 +25,7 @@ const items = [
     },
     {
         key: 'projects-key',
-        href: "/projects",
+        href: "/dashboard/projects",
         label: "Projects",
         startContent: <TfiWrite />,
         description: "History of projects"

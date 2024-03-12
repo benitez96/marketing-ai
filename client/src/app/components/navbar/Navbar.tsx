@@ -14,13 +14,13 @@ export default function Navigation() {
 
             <NavbarContent className="sm:hidden pr-3" justify="center">
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">Marketing AI</p>
+                    <p className="font-bold text-inherit">KangarooWriter</p>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">Marketing AI</p>
+                    <p className="font-bold text-inherit">KangarooWriter</p>
                 </NavbarBrand>
                 <NavbarItem>
                     <Button
@@ -31,7 +31,7 @@ export default function Navigation() {
                         showAnchorIcon={true}
                         anchorIcon={<FaExternalLinkAlt />}
                     >
-                        Generate Email
+                        Write
                     </Button>
                 </NavbarItem>
             </NavbarContent>

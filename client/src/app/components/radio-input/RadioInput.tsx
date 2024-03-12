@@ -11,7 +11,7 @@ export const RadioInput = ({ description, label, values, name }: Props) => {
             {
                 values.map((radio: IFormInputValues) => {
                     return (
-                        <CustomRadio name={name} description={radio.description} value={radio.value} label={radio.label}>
+                        <CustomRadio key={radio.value} name={name} description={radio.description} value={radio.value} label={radio.label}>
                             {radio.label}
                         </CustomRadio>
                     )

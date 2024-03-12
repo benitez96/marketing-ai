@@ -1,7 +1,7 @@
 "use client"
 
 import { Types, IFormInput } from "interfaces/form"
-import { RadioInput } from "../Radio/RadioInput"
+import { RadioInput } from "../radio-input/RadioInput"
 import SelectInput from "../select-input/SelectInput";
 
 interface Props {

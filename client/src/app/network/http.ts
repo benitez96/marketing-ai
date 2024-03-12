@@ -1,5 +1,6 @@
 
 import axios, { AxiosInstance, AxiosResponse, CancelToken, CancelTokenSource, Canceler } from 'axios';
+import { cookies } from 'next/headers';
 
 interface IRequest {
     request: Promise<AxiosResponse<any, any>>

@@ -1,14 +1,9 @@
-"use client"
+import { Login } from '@/components/login/Login'
 
-import React from 'react'
-
-import { Login } from '@/components/Login/Login'
-
-export const LoginPage = () => {
+const LoginPage = () => {
     return (
         <div className='flex align-middle justify-center mt-8'><Login/></div>
     )
 }
-
 
 export default LoginPage
