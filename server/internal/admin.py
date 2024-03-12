@@ -1,27 +1,23 @@
-from fastapi import Depends
 from starlette_admin.contrib.sqla import Admin, ModelView
-from starlette_admin.fields import TextAreaField
-from core.dependencies import get_repository
 import core.models as models
-from core.database import engine, get_session
-from infrastructure.repositories.user_repository import UserRepository
+from core.database import engine
+from internal.auth import UsernameAndPasswordProvider
+from starlette.middleware import Middleware
+from starlette.middleware.sessions import SessionMiddleware
 
 
 class ChatView(ModelView):
-    exclude_fields_from_create = ["config", "prompts"]
-    fields = ["name", "description", "user"]
-
-
-# class InputView(ModelView):
-
-#     template = TextAreaField
+    exclude_fields_from_create = ["prompts"]
+    fields = ["name", "description", "user", "config"]
 
 
 def mount_admin(app):
     admin = Admin(
         engine,
         title="Marketing AI admin",
-        logo_url="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png",
+        # logo_url="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png",
+        auth_provider=UsernameAndPasswordProvider(),
+        middlewares=[Middleware(SessionMiddleware, secret_key="SECRET")],
     )
 
     # Add view
@@ -30,7 +26,7 @@ def mount_admin(app):
     admin.add_view(ChatView(models.Chat, icon="fa fa-comment"))
     admin.add_view(ModelView(models.Prompt, icon="fa-solid fa-terminal"))
     admin.add_view(ModelView(models.Product, icon="fa-brands fa-product-hunt"))
-    admin.add_view(ModelView(models.Form, icon="fa fa-cog"))
+    admin.add_view(ModelView(models.Form, icon="fa-solid fa-align-justify"))
     admin.add_view(ModelView(models.Input, icon="fa fa-cog"))
     # admin.add_view(InputView(models.Input, icon="fa fa-cog"))
     admin.add_view(ModelView(models.AIModel, icon="fa-solid fa-brain"))

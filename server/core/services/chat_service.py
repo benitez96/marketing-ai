@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from jinja2 import Template
 from core.dependencies import get_repository
 from core.models import Chat, Prompt, User, Input
@@ -57,6 +57,13 @@ class ChatService:
 
         input_model = initial_conf.pop("ai_model")
         model = self.aimodel_repository.get_by_name(input_model)
+
+        if not model:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="GPT model must be provided.",
+            )
+
         model_name = model.name or "gpt-3.5-turbo"
         inputs = self.input_repository.get_form_inputs(user.suscription.product.form)
 
@@ -70,7 +77,6 @@ class ChatService:
                 if input.source == "user"
                 else {input.name: input.default_value}
             )
-            print(input.role)
             messages.append({"role": input.role.value, "content": template.render(ctx)})
 
         gpt = OpenAIService(

@@ -31,6 +31,7 @@ class User(BaseModel, table=True):
     email: str
     password: str
     active: Optional[bool] = Field(default=True)
+    is_admin: Optional[bool] = Field(default=False)
 
     chats: list["Chat"] = Relationship(back_populates="user")
 
