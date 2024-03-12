@@ -1,6 +1,7 @@
 import React from "react";
-import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Button, Link as LinkNextUI } from "@nextui-org/react";
 import Link from "next/link";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { menuItems } from "./static";
 
@@ -22,9 +23,16 @@ export default function Navigation() {
                     <p className="font-bold text-inherit">Marketing AI</p>
                 </NavbarBrand>
                 <NavbarItem>
-                    <Link color="foreground" href="/dashboard">
-                        Features
-                    </Link>
+                    <Button
+                        href="/dashboard"
+                        as={LinkNextUI}
+                        color="primary"
+                        variant="solid"
+                        showAnchorIcon={true}
+                        anchorIcon={<FaExternalLinkAlt />}
+                    >
+                        Generate Email
+                    </Button>
                 </NavbarItem>
             </NavbarContent>
 

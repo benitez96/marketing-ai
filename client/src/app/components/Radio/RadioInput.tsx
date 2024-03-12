@@ -3,7 +3,7 @@ import { CustomRadio } from './CustomRadio';
 import { RadioGroup } from '@nextui-org/react';
 import { IFormInput, IFormInputValues } from 'interfaces/form';
 
-type Props = Omit<IFormInput, 'type'>
+type Props = Omit<IFormInput, 'type' | 'required'>
 
 export const RadioInput = ({ description, label, values, name }: Props) => {
     return (

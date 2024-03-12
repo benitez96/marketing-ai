@@ -10,9 +10,9 @@ interface Props {
 
 export const CreateForm = ({ form }: Props) => {
     return (
-        <>
-            <Formik initialValues={{}} onSubmit={(e: any) => console.log(e)}>
-                <Form>
+        <div className='w-5/6'>
+            <Formik initialValues={{}} onSubmit={(e: any) => alert(JSON.stringify(e))}>
+                <Form className='flex flex-col gap-6' >
                     {
                         form.map((input: IFormInput) => {
                             return (
@@ -23,6 +23,6 @@ export const CreateForm = ({ form }: Props) => {
                     <button type="submit">Submit</button>
                 </Form>
             </Formik>
-        </>
+        </div>
     )
 }

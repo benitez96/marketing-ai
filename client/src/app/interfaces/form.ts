@@ -1,5 +1,6 @@
 export enum Types {
-    RADIO = 'radio'
+    RADIO = 'radio',
+    SELECT = 'select'
 }
 
 export interface IFormInputValues {
@@ -14,6 +15,8 @@ export interface IFormInput {
     values: IFormInputValues[]
     type: Types;
     name: string;
+    required: boolean;
+    placeholder?: string;
 }
 
 // {
@@ -21,9 +24,7 @@ export interface IFormInput {
 //     id: 2,
 //     role: 'user',
 //     default_value: '',
-//     placeholder: '',
 //     enabled: false,
 //     template: '-',
-//     required: false,
 //     priority: null
 //   }

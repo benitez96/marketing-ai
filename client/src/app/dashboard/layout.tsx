@@ -7,11 +7,9 @@ export default function DashboardLayout({
 }) {
 
     return (
-        <div className="flex flex-row border m-8 rounded-xl bg-slate-50">
+        <div className="flex flex-row border m-4 rounded-xl bg-slate-50 min-h-[100vh] max-w-[1600px] mx-auto">
             <Sidebar />
-            <div className="rounded-xl m-4 border p-4 w-full bg-white">
-                {children}
-            </div>
+            {children}
         </div>
     );
 }
