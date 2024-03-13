@@ -41,6 +41,7 @@ export const Login = () => {
     }
     else {
       setIsError(true)
+      router.push('/login')
     }
   }
 

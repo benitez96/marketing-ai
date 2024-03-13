@@ -1,7 +1,6 @@
 import { storeToken, deleteToken } from '@/actions/auth';
 import { request } from '@/utils/axios'
-import { ILogin, IToken } from 'interfaces/user';
-import HttpService from 'network/http';
+import { ILogin } from 'interfaces/user';
 
 export interface LoginResponse {
     access_token: string;
@@ -13,9 +12,7 @@ export const login = async (user: ILogin): Promise<LoginResponse> => {
         const form = new FormData();
         form.append('username', user.username);
         form.append('password', user.password);
-        const apiService = new HttpService()
-        const { request } = apiService.post('/users/signin', form, { "Content-Type": "multipart/form-data" })
-        const { data, status } = await request
+        const { data, status } = await request.post('/users/signin', form, { headers: { "Content-Type": "multipart/form-data" } })
         if (status === 200) {
             await storeToken(data)
             return {

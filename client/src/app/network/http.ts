@@ -1,9 +1,10 @@
 
+import { TOKEN_NAME } from '@/utils/const';
 import axios, { AxiosInstance, AxiosResponse, CancelToken, CancelTokenSource, Canceler } from 'axios';
 import { cookies } from 'next/headers';
 
-interface IRequest {
-    request: Promise<AxiosResponse<any, any>>
+interface IRequest<T> {
+    request: Promise<AxiosResponse<T, any>>
     cancel: Canceler
 }
 
@@ -25,10 +26,14 @@ class HttpService {
     }
 
     get defaultHeaders() {
-        return {
-            // 'Authorization': localStorage.getItem('Authorization'),
+        const header: any = {
             'Content-Type': 'application/json',
-        };
+        }
+        const token = cookies().get(TOKEN_NAME)
+        if (token !== undefined) {
+            header['Authorization'] = `Bearer ${token.value}`
+        }
+        return header;
     }
 
     request(method: string, url: string, data: any = null, customHeaders = {}) {
@@ -52,11 +57,11 @@ class HttpService {
         };
     }
 
-    get(url: string, customHeaders = {}) {
-        return this.request('get', url, null, customHeaders);
+    get<T>(url: string): IRequest<T> {
+        return this.request('get', url, null);
     }
 
-    post<T>(url: string, data: T, customHeaders = {}): IRequest {
+    post<T>(url: string, data: T, customHeaders = {}): IRequest<T> {
         return this.request('post', url, data, customHeaders);
     }
 

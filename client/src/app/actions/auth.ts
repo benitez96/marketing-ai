@@ -14,6 +14,10 @@ export async function storeToken(request: IToken) {
     })
 }
 
+export async function getToken() {
+    return cookies().get(TOKEN_NAME)
+}
+
 export async function deleteToken() {
     cookies().delete(TOKEN_NAME)
 }
