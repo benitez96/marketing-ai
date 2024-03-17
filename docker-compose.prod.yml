@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  # client
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile.prod
+  # server
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile.prod
+    env_file:
+      - .env
+    depends_on:
+      - db
+  # database
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+  # proxy
+  proxy:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      # - ./data/www:/var/www/
+      # - ./data/certbot/conf:/etc/letsencrypt
+      # - ./data/certbot/www:/var/www/certbot
+
+volumes:
+  postgres_data:

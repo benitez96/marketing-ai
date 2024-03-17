@@ -1,0 +1,64 @@
+server {
+    # listen 443 ssl; # enable for https conections
+
+    gzip on;
+    gzip_min_length 10240;
+    gzip_comp_level 1;
+    gzip_vary on;
+    gzip_disable msie6;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types
+        # text/html is always compressed by HttpGzipModule
+        text/css
+        text/javascript
+        text/xml
+        text/plain
+        text/x-component
+        application/javascript
+        application/x-javascript
+        application/json
+        application/xml
+        application/rss+xml
+        application/atom+xml
+        font/truetype
+        font/opentype
+        application/vnd.ms-fontobject
+        image/jpg
+        image/jpeg
+        image/gif
+        image/svg+xml;
+
+    # ssl_certificate /etc/ssl/certs/some_cert.com.crt; # enable for https conections
+    # ssl_certificate_key /etc/ssl/private/some_cert.com.key; # enable for https conections
+
+    location / {
+        proxy_pass http://client:3000;
+    }
+
+    # location /robots.txt {
+    #     add_header Content-Type text/plain;
+    #     alias /var/www/robots.txt;
+    # }
+
+    # location /sitemap.xml {
+    #     add_header Content-Type text/xml;
+    #     alias /var/www/sitemap.xml;
+    # }
+
+    location /api/ {
+        proxy_pass http://server:8000;
+    }
+
+    location /images/ {
+        proxy_pass http://server:8000;
+    }
+
+    location ~* \.(?:css|js)$ {
+        expires 1d;  
+        add_header Vary Accept-Encoding;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        add_header Cache-Control private;
+        proxy_pass http://client:3000;
+    }
+
+}

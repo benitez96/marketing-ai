@@ -7,7 +7,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { Card, CardHeader, CardBody, CardFooter, Input, Button, Divider } from "@nextui-org/react";
 import { useRouter } from 'next/navigation'
 
-import { request } from '@/utils/axios';
+import { api } from '@/utils/axios';
 import { validationSchema } from '@/schemas'
 import * as userServices from '@/services/userServices'
 import { ILogin } from 'interfaces/user';
@@ -31,7 +31,7 @@ export default function Login() {
     setIsError(false)
     const loginResponse = await userServices.login(values)
     if (loginResponse.success) {
-      request.interceptors.request.use(
+      api.interceptors.request.use(
         (config: any) => {
           config.headers['Authorization'] = `Bearer ${loginResponse.access_token}`
           return config

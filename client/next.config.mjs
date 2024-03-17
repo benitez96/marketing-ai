@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    swcMinify: true,
+  swcMinify: true,
+  output: "standalone",
 };
 
 export default nextConfig;

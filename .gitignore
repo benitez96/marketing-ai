@@ -1,3 +1,7 @@
+#nginx conf
+default.conf
+
+
 # Linter cache
 .ruff_cache
 

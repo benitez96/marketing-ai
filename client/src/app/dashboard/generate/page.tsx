@@ -2,9 +2,10 @@ import axios from 'axios'
 import { CreateForm } from '@/components/form/Form';
 
 import { IFormInput } from "interfaces/form"
+import { api } from '@/utils/axios';
 
 const getForm = async () => {
-    const response = await axios.get<IFormInput[]>('http://localhost:8000/api/forms/free')
+    const response = await api.get<IFormInput[]>('forms/free')
     return response.data
 }
 
