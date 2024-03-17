@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/app
-    command: sh -c "npm run dev"
+    command: sh -c "pnpm run dev"
     env_file:
       - .env
   # server

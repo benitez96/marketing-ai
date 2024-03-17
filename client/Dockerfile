@@ -1,10 +1,10 @@
 # Development stage
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml* ./
+
+RUN corepack enable pnpm && pnpm i
 
 COPY . .

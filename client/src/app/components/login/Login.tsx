@@ -17,7 +17,7 @@ const initialValues: any = {
   password: '',
 }
 
-export const Login = () => {
+export default function Login() {
   const [isError, setIsError] = useState(false)
 
   const [pswVisible, setPswVisible] = useState(false)
