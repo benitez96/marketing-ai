@@ -4,7 +4,7 @@ import HttpService from "network/http";
 
 export const getProjects = async (): Promise<IProject[]> => {
     try {
-        const { request } = new HttpService().get<IProject[]>(`http://localhost:8000/api/chats/`)
+        const { request } = new HttpService().get<IProject[]>(`chats/`)
         return (await request).data
     } catch (error) {
         handleAxiosError(error)
@@ -14,7 +14,7 @@ export const getProjects = async (): Promise<IProject[]> => {
 
 export const getProjectById = async (id: string) => {
     try {
-        const { request } = new HttpService().get<IProject>(`http://localhost:8000/api/chats/${id}`)
+        const { request } = new HttpService().get<IProject>(`chats/${id}`)
         return (await request).data
     } catch (error) {
         handleAxiosError(error)

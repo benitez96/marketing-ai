@@ -1,13 +1,5 @@
-import axios from 'axios'
 import { CreateForm } from '@/components/form/Form';
-
-import { IFormInput } from "interfaces/form"
-import { api } from '@/utils/axios';
-
-const getForm = async () => {
-    const response = await api.get<IFormInput[]>('forms/free')
-    return response.data
-}
+import { getForm } from '@/services/server/formServices';
 
 const GeneratePage = async () => {
     const form = await getForm()
