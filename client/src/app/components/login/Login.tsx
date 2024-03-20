@@ -18,11 +18,9 @@ const initialValues: any = {
 }
 
 export default function Login() {
-  const [isError, setIsError] = useState(false)
-
-  const [pswVisible, setPswVisible] = useState(false)
   const router = useRouter()
-
+  const [isError, setIsError] = useState(false)
+  const [pswVisible, setPswVisible] = useState(false)
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
   }

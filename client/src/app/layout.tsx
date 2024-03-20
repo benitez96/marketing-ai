@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
 import Navigation from "@/components/navbar/Navbar";
+import ThemeProvider from "providers/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-slate-100" suppressHydrationWarning={true}>
       <body >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

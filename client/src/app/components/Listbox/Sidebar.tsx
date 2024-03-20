@@ -8,7 +8,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 
 import items from './items';
-import { ListboxWrapper } from '@/components/Listbox/ListboxWrapper';
+import { ListboxWrapper } from '@/components/listbox/ListboxWrapper';
 
 const Sidebar = () => {
     const pathname = usePathname()
