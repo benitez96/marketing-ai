@@ -5,7 +5,7 @@ interface Props {
 }
 
 export const ListboxWrapper = ({ children }: Props) => (
-    <div className="w-full h-full max-w-[260px] px-1 py-2 rounded-small border-default-200 dark:border-default-100">
+    <div className="flex flex-col gap-2 p-2 justify-between h-full">
         {children}
     </div>
 );
