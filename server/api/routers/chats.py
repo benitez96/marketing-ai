@@ -57,3 +57,12 @@ async def generate_initial_prompt(
     config: dict[str, str],
 ):
     return chat_service.init_chat(user=user, chat_id=chat_id, initial_conf=config)
+
+@router.post("/init", response_model=ChatReadDetail, summary="Create chat prompt")
+async def generate_prompt(
+    *,
+    user: Annotated[User, Depends(get_current_user)],
+    chat_service: ChatService = Depends(ChatService),
+    config: dict[str, str],
+):
+    return chat_service.init_chat(user=user, initial_conf=config)

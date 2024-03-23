@@ -22,6 +22,8 @@ services:
       - ./server/:/app/
     depends_on:
       - db
+    stdin_open: true
+    tty: true
   # database
   db:
     image: postgres:16

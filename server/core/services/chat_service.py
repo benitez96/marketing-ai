@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import Depends, HTTPException, status
 from jinja2 import Template
 from core.dependencies import get_repository
@@ -50,10 +51,8 @@ class ChatService:
         return self.chat_repository.update(chat_id, chat)
 
     def init_chat(
-        self, user: User, chat_id: int, initial_conf: dict[str, str]
-    ) -> Prompt:
-        chat = self.get_chat_detail(user=user, chat_id=chat_id)
-        chat.config = initial_conf
+        self, user: User, initial_conf: dict[str, str], chat_id: Optional[int] = None
+    ) -> Chat:
 
         input_model = initial_conf.pop("ai_model")
         model = self.aimodel_repository.get_by_name(input_model)
@@ -84,11 +83,20 @@ class ChatService:
             model_name,
         )
 
-        print(messages)
         prompt = gpt.get_response(messages)
+
+        if not chat_id:
+            res = eval(prompt.response)
+            chat = self.create_chat(user=user, chat=ChatCreate(name=res.get('title', ''), description=res.get('description', '')))
+            chat_id = chat.id
+
+        chat = self.get_chat_detail(user=user, chat_id=chat_id)
+        chat.config = initial_conf
+
+
         db_prompt = Prompt(**prompt.model_dump(), chat=chat, ai_model=model)
         chat.prompts.append(db_prompt)
 
         self.chat_repository.update(chat_id, chat)
 
-        return db_prompt
+        return chat
