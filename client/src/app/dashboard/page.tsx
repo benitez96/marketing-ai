@@ -1,8 +1,8 @@
-import React from 'react'
+import { InputUrl } from '@/components/Input'
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
     return (
-        <div>Dashboard</div>
+        <InputUrl />
     )
 }
 

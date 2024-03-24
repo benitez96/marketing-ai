@@ -1,0 +1,22 @@
+@keyframes pulse {
+    0% {
+        background-color: #ffffff;
+    }
+
+    50% {
+        background-color: #f0f0f0;
+    }
+
+    100% {
+        background-color: #ffffff;
+    }
+}
+
+.background{
+    background-color: red;
+}
+
+.loading {
+    animation: pulse 1s infinite !important;
+    /* Apply the animation */
+}

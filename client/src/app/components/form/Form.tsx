@@ -4,6 +4,7 @@ import { Form, Formik } from 'formik'
 import { Button } from '@nextui-org/react'
 
 import { IFormInput } from "interfaces/form"
+import { InputUrl } from '../Input'
 
 interface Props {
   form: IFormInput[]
