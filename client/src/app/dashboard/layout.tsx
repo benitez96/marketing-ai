@@ -18,6 +18,7 @@ import {
   Button, Link as LinkNextUI 
 } from "@nextui-org/react";
 import Link from "next/link";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 export default async function DashboardLayout({
     children
@@ -25,7 +26,7 @@ export default async function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-    <body className="dark text-foreground bg-background min-h-[100dvh] flex flex-col">
+    <body className="text-foreground bg-background min-h-[100dvh] flex flex-col">
       <Navbar 
         disableAnimation 
         isBordered
@@ -51,6 +52,9 @@ export default async function DashboardLayout({
         </NavbarContent>
 
         <NavbarContent justify="end">
+          <NavbarItem>
+            <ThemeSwitch />
+          </NavbarItem>
           <NavbarItem>
             <Button as={Link} href="/signup" variant="flat">
               Logout

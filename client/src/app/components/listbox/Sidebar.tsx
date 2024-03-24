@@ -30,7 +30,7 @@ const Sidebar = () => {
         variant='shadow'
         fullWidth
         radius='sm'
-        className='justify-between h-14'
+        className='justify-between h-14 text-white'
         endContent={<MdOutlineKeyboardArrowRight />}
       >
         Generate

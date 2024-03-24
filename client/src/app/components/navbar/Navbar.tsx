@@ -13,6 +13,7 @@ import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { menuItems } from "./static";
+import { ThemeSwitch } from "../ThemeSwitch";
 
 export default function Navigation() {
   return (
@@ -30,13 +31,13 @@ export default function Navigation() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">KangarooWriter</p>
+          <p className="font-bold">KangarooWriter</p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">KangarooWriter</p>
+          <p className="font-bold">KangarooWriter</p>
         </NavbarBrand>
         <NavbarItem>
           <Button
@@ -45,6 +46,7 @@ export default function Navigation() {
             color="primary"
             variant="solid"
             showAnchorIcon={true}
+            className="text-white"
             anchorIcon={<FaExternalLinkAlt />}
           >
             Write
@@ -53,6 +55,9 @@ export default function Navigation() {
       </NavbarContent>
 
       <NavbarContent justify="end">
+        <NavbarItem className="hidden md:flex">
+          <ThemeSwitch />
+        </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Link href="/login">Login</Link>
         </NavbarItem>

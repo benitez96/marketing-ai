@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className="dark text-foreground bg-background min-h-[100dvh]">
+      <body className="text-foreground bg-background min-h-[100dvh]">
         <Providers>
           <div>
             <Navigation/>

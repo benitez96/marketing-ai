@@ -26,6 +26,7 @@ export const CreateForm = ({ form }: Props) => {
           radius='sm'
           color='primary'
           size='lg'
+          className='text-white'
         >
           Submit
         </Button>
