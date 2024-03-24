@@ -19,7 +19,6 @@ export const InputUrl = () => {
         }
         setLoading(true)
         const r = await analyzeUrl(website.url)
-        console.log(r)
         setWebsite({
             ...website,
             description: r.product_description
