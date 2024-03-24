@@ -53,7 +53,6 @@ class ChatService:
     def init_chat(
         self, user: User, initial_conf: dict[str, str], chat_id: Optional[int] = None
     ) -> Chat:
-
         input_model = initial_conf.pop("ai_model")
         model = self.aimodel_repository.get_by_name(input_model)
 
@@ -87,12 +86,16 @@ class ChatService:
 
         if not chat_id:
             res = eval(prompt.response)
-            chat = self.create_chat(user=user, chat=ChatCreate(name=res.get('title', ''), description=res.get('description', '')))
+            chat = self.create_chat(
+                user=user,
+                chat=ChatCreate(
+                    name=res.get("title", ""), description=res.get("description", "")
+                ),
+            )
             chat_id = chat.id
 
         chat = self.get_chat_detail(user=user, chat_id=chat_id)
         chat.config = initial_conf
-
 
         db_prompt = Prompt(**prompt.model_dump(), chat=chat, ai_model=model)
         chat.prompts.append(db_prompt)

@@ -58,6 +58,7 @@ async def generate_initial_prompt(
 ):
     return chat_service.init_chat(user=user, chat_id=chat_id, initial_conf=config)
 
+
 @router.post("/init", response_model=ChatReadDetail, summary="Create chat prompt")
 async def generate_prompt(
     *,

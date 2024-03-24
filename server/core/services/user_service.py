@@ -5,12 +5,10 @@ from passlib.context import CryptContext
 from core.dependencies import get_repository
 from core.models import User
 from core.schemas.user import Token
+from core.settings import get_settings
 from infrastructure.repositories.user_repository import UserRepository
 
-
-JWT_SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+settings = get_settings()
 
 
 class UserService:
@@ -45,7 +43,7 @@ class UserService:
                 detail="Incorrect username or password",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
         access_token = self._create_access_token(
             data={"user_id": user.id}, expires_delta=access_token_expires
         )
@@ -70,5 +68,7 @@ class UserService:
         else:
             expire = datetime.now(timezone.utc) + timedelta(minutes=15)
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
+        encoded_jwt = jwt.encode(
+            to_encode, settings.jwt_secret_key, ALGORITHM=settings.algorithm
+        )
         return encoded_jwt
