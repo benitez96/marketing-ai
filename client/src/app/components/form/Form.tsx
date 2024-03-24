@@ -1,13 +1,12 @@
 "use client"
 import { FormInput } from '@/components/input/FormInput'
 import { Form, Formik } from 'formik'
-import { Button } from '@nextui-org/react'
 
 import { IFormInput } from "interfaces/form"
 import { InputUrl } from '../Input'
 
 interface Props {
-  form: IFormInput[]
+    form: IFormInput[]
 }
 
 export const CreateForm = ({ form }: Props) => {

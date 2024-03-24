@@ -5,8 +5,8 @@ import { Field, useFormikContext } from "formik";
 import { IFormInputValues } from 'interfaces/form';
 
 type Props = IFormInputValues & {
-  name: string;
-  children: React.ReactNode
+    name: string;
+    children: React.ReactNode
 }
 
 export const CustomRadio = ({ name, value, description, children }: Props) => {
