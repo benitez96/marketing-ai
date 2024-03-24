@@ -1,3 +1,4 @@
+import HttpService from "network/http";
 import puppeteer from "puppeteer";
 
 export async function POST(request: Request) {
@@ -24,9 +25,10 @@ export async function POST(request: Request) {
         return metaTagsData;
     });
 
-    await browser.close();
-    // other actions...
-    // await browser.close();
+    const httpRequest = new HttpService().post<any>(`forms/2`, { metadata: JSON.stringify(metaTags) })
+    const resp = await httpRequest.request
 
-    return Response.json({ head: metaTags })
+    await browser.close();
+
+    return Response.json({ product_description: JSON.parse(resp.data.response).product_description })
 }

@@ -18,3 +18,7 @@ export interface IFormInput {
     required: boolean;
     placeholder?: string;
 }
+
+export interface IFormAnalyzeWebsite {
+    product_description: string
+}

@@ -1,10 +1,11 @@
-import { IProject } from "interfaces/project";
-import { handleAxiosError } from "@/utils/handleError";
 import axios from "axios";
 
-export const analyzeUrl = async (url: string): Promise<any> => {
+import { handleAxiosError } from "@/utils/handleError";
+import { IFormAnalyzeWebsite } from "interfaces/form";
+
+export const analyzeUrl = async (url: string): Promise<IFormAnalyzeWebsite> => {
     try {
-        const response = await axios.post('http://localhost:3000/api/analyze', {
+        const response = await axios.post<IFormAnalyzeWebsite>('http://localhost:3000/api/analyze', {
             url
         })
         return response.data

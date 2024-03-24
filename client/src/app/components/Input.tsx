@@ -1,12 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { analyzeUrl } from '@/services/server/scrappingServices';
 import styles from './input.module.css'
 
 export const InputUrl = () => {
     const [loading, setLoading] = useState(false)
-    const [context, setContext] = useState('')
     const [website, setWebsite] = useState({
         url: '',
         name: '',
@@ -17,8 +16,12 @@ export const InputUrl = () => {
     const fetchData = async () => {
         setLoading(true)
         const r = await analyzeUrl(website.url)
-        setContext(JSON.stringify(r.head))
+        setWebsite({
+            ...website,
+            description: r.product_description
+        })
         setLoading(false)
+        console.log(website)
     }
 
     const validate = (url: string) => {
@@ -39,7 +42,6 @@ export const InputUrl = () => {
         }
     }
 
-
     return (
         <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div className='flex flex-row items-center gap-4'>
@@ -59,8 +61,8 @@ export const InputUrl = () => {
                 placeholder="Product/Service Description (Example: KangarooWriter is a tool for online marketers...)"
                 name='description'
                 onChange={handleOnChange}
+                value={website.description}
             />
-            <p>{context}</p>
         </div>
     );
 }
