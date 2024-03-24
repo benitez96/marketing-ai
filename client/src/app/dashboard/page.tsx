@@ -2,7 +2,7 @@ import { InputUrl } from '@/components/Input'
 
 const DashboardPage = async () => {
     return (
-        <InputUrl />
+        <h1>Working</h1>
     )
 }
 
