@@ -14,8 +14,12 @@ export const InputUrl = () => {
     const [isValidated, setIsValidated] = useState(false)
 
     const fetchData = async () => {
+        if (!validate(website.url)) {
+            return alert('Invalid Url')
+        }
         setLoading(true)
         const r = await analyzeUrl(website.url)
+        console.log(r)
         setWebsite({
             ...website,
             description: r.product_description
@@ -25,9 +29,10 @@ export const InputUrl = () => {
     }
 
     const validate = (url: string) => {
-        const urlRegex = /^((?!https?:\/\/)[\w.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+        const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
         urlRegex.test(url)
         setIsValidated(urlRegex.test(url))
+        return urlRegex.test(url)
     }
 
     const handleOnChange = (e: any) => {
@@ -46,7 +51,7 @@ export const InputUrl = () => {
         <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div className='flex flex-row items-center gap-4'>
                 <Input type="string" label="URL" placeholder="Enter your website url" value={website.url} name='url' onChange={handleOnChange} />
-                <Button color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData}>
+                <Button color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
                     Scan My Website
                 </Button>
             </div>
