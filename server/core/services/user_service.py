@@ -69,6 +69,6 @@ class UserService:
             expire = datetime.now(timezone.utc) + timedelta(minutes=15)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
-            to_encode, settings.jwt_secret_key, ALGORITHM=settings.algorithm
+            to_encode, settings.jwt_secret_key, algorithm=settings.algorithm
         )
         return encoded_jwt
