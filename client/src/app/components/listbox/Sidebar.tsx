@@ -60,7 +60,7 @@ const Sidebar = () => {
           key="logout-key"
           color='default'
           className="text-2xl"
-          startContent= <LuLogOut />
+          startContent={<LuLogOut />}
           description="Leave session"
           onClick={logout}
           href= "/"
