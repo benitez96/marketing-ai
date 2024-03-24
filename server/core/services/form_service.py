@@ -28,7 +28,7 @@ class FormService:
 
     def call_form(self, form_id: int, params: dict[str, str]) -> Prompt:
         form = self.form_repository.get(form_id)
-        model_name = params.pop("ai_model") or "gpt-3.5-turbo"
+        model_name = getattr(params, "ai_model", "gpt-3.5-turbo")
 
         inputs = self.input_repository.get_form_inputs(form)
 
