@@ -125,6 +125,8 @@ class Form(BaseModel, table=True):
     # title: Optional[str] = None
     description: Optional[str] = None
 
+    is_public: bool = False
+
     products: Optional[list["Product"]] = Relationship(back_populates="form")
 
     inputs: Optional[list["Input"]] = Relationship(
