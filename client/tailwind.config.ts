@@ -22,12 +22,14 @@ const config: Config = {
     themes: {
       'dark': {
         colors: {
-          primary: '#e11d48'
+          primary: '#e11d48',
+          secondary:'#9333ea',
         }
       },
       'light': {
         colors: {
-          primary: '#e11d48'
+          primary: '#e11d48',
+          secondary:'#9333ea',
         }
       }
     }
