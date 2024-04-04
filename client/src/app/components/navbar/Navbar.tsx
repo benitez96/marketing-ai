@@ -1,12 +1,15 @@
-import React from "react";
+"use client"
+import React, { useContext } from "react";
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Button, Link as LinkNextUI } from "@nextui-org/react";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { menuItems } from "./static";
-import { ThemeSwitch } from "../ThemeSwitch";
+import { ThemeContext } from "providers/providers";
+import Loader from "../loader/Loader";
 
 export default function Navigation() {
+    const { user, isLoading } = useContext(ThemeContext)
     return (
         <Navbar disableAnimation isBordered>
             <NavbarContent className="sm:hidden" justify="start">
@@ -37,16 +40,27 @@ export default function Navigation() {
                 </NavbarItem>
             </NavbarContent>
 
-            <NavbarContent justify="end">
-                <NavbarItem className="hidden md:flex">
-                    <Link href="/login">Login</Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Button as={Link} href="/signup" variant="flat">
-                        Sign Up
-                    </Button>
-                </NavbarItem>
-            </NavbarContent>
+            <Loader>
+                {
+                    user.username.length > 0
+                        ?
+                        <Link href="/dashboard">Dashboard</Link>
+                        :
+                        <NavbarContent justify="end">
+                            <NavbarItem className="hidden md:flex">
+                                <Link href="/login">Login</Link>
+                            </NavbarItem>
+                            <NavbarItem>
+                                <Button as={Link} href="/signup" variant="flat">
+                                    Sign Up
+                                </Button>
+                            </NavbarItem>
+                        </NavbarContent>
+                }
+            </Loader>
+
+
+
 
             <NavbarMenu>
                 {menuItems.map((item, index) => (

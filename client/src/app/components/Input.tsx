@@ -18,14 +18,13 @@ export const InputUrl = () => {
             return alert('Invalid Url')
         }
         setLoading(true)
-        const r = await analyzeUrl(website.url)
-        console.log(r)
+        const analyzedWebsite = await analyzeUrl(website.url)
         setWebsite({
             ...website,
-            description: r.product_description
+            description: analyzedWebsite.product_description.description,
+            name: analyzedWebsite.product_description.title
         })
         setLoading(false)
-        console.log(website)
     }
 
     const validate = (url: string) => {

@@ -20,5 +20,5 @@ export interface IFormInput {
 }
 
 export interface IFormAnalyzeWebsite {
-    product_description: string
+    product_description: any
 }

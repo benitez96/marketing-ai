@@ -24,12 +24,10 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
-        console.log('=====>', error)
         // Handle errors globally
         if (error.response && error.response.status === 401) {
             // await deleteToken()
             // Redirect to login page if user is not authenticated
-
         }
         return Promise.reject(error);
     }
