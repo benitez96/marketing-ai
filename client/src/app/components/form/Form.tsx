@@ -22,7 +22,7 @@ export const CreateForm = ({ form }: Props) => {
                             )
                         })
                     }
-                    <button type="submit">Submit</button>
+                    <button type="submit" className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
                 </Form>
             </Formik>
         </div>

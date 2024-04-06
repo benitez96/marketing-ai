@@ -98,9 +98,9 @@ export default function Login() {
                     variant="solid"
                     color="primary"
                     type='submit'
-                  // isLoading={login.isLoading}
+                    className='text-white'
                   >
-                    Ingresar
+                    Log in
                   </Button>
                 </div>
                 <Divider className='my-5' />
