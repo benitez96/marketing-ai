@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { analyzeUrl } from '@/services/server/scrappingServices';
+import { CgEnter } from "react-icons/cg";
+
 import styles from './input.module.css'
 
 export const InputUrl = () => {
@@ -50,9 +52,12 @@ export const InputUrl = () => {
         <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div className='flex flex-row items-center gap-4'>
                 <Input type="string" label="URL" placeholder="Enter your website url" value={website.url} name='url' onChange={handleOnChange} />
+
                 <Button color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
-                    Scan My Website
+                    <p className='hidden md:block'>Scan My Website</p>
+                    <CgEnter className='block' style={{ width: '40px', height: '40px' }} />
                 </Button>
+
             </div>
             <Input classNames={{
                 inputWrapper: [loading && styles.loading]
