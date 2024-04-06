@@ -7,6 +7,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { menuItems } from "./static";
 import { ThemeContext } from "providers/providers";
 import Loader from "../loader/Loader";
+import { ThemeSwitch } from "../ThemeSwitch";
 
 export default function Navigation() {
     const { user, isLoading } = useContext(ThemeContext)
@@ -31,6 +32,7 @@ export default function Navigation() {
                         href="/dashboard"
                         as={LinkNextUI}
                         color="primary"
+                        className="text-white"
                         variant="solid"
                         showAnchorIcon={true}
                         anchorIcon={<FaExternalLinkAlt />}
@@ -47,6 +49,9 @@ export default function Navigation() {
                         <Link href="/dashboard">Dashboard</Link>
                         :
                         <NavbarContent justify="end">
+                            <NavbarItem className="hidden md:flex">
+                                <ThemeSwitch />
+                            </NavbarItem>
                             <NavbarItem className="hidden md:flex">
                                 <Link href="/login">Login</Link>
                             </NavbarItem>

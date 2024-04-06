@@ -1,7 +1,7 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from core.models import Chat, User
-from core.schemas.chat import ChatCreate, ChatRead, ChatReadDetail, ChatUpdate
+from core.schemas.chat import AnalyzedMetadata, ChatCreate, ChatRead, ChatReadDetail, ChatUpdate
 from core.schemas.prompt import PromptRead
 from core.services.auth_service import get_current_user
 from core.services.chat_service import ChatService
@@ -67,3 +67,12 @@ async def generate_prompt(
     config: dict[str, str],
 ):
     return chat_service.init_chat(user=user, initial_conf=config)
+
+@router.post("/analyze_metadata", response_model=AnalyzedMetadata, summary="Get a title & description from a give metadata website")
+async def analyze_metadata(
+    *,
+    _: Annotated[User, Depends(get_current_user)],
+    chat_service: ChatService = Depends(ChatService),
+    metadata: Annotated[str, Body(embed=True)],
+):
+    return chat_service.analyze_metadata(metadata=metadata)

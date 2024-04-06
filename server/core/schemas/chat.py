@@ -28,3 +28,7 @@ class ChatUpdate(SQLModel):
     name: Optional[str] = None
     description: Optional[str] = None
     config: Optional[dict] = None
+
+class AnalyzedMetadata(SQLModel):
+    title: str
+    description: str

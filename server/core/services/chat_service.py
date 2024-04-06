@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status
 from jinja2 import Template
 from core.dependencies import get_repository
 from core.models import Chat, Prompt, User, Input
-from core.schemas.chat import ChatCreate, ChatReadDetail, ChatUpdate
+from core.schemas.chat import AnalyzedMetadata, ChatCreate, ChatReadDetail, ChatUpdate
 from core.services.gpt_service import OpenAIService
 from core.settings import get_settings
 from infrastructure.repositories.aimodel_repository import AIModelRepository
@@ -103,3 +103,42 @@ class ChatService:
         self.chat_repository.update(chat_id, chat)
 
         return chat
+
+
+    def analyze_metadata(
+        self,
+        metadata: str,
+    ) -> AnalyzedMetadata:
+
+        model = self.aimodel_repository.get_by_name("gpt-3.5-turbo")
+
+        if not model:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="GPT model must be provided.",
+            )
+
+        model_name = model.name or "gpt-3.5-turbo"
+
+        gpt = OpenAIService(
+            settings.gpt_key,
+            model_name,
+        )
+
+        title_messages = [
+            {"role": "system", "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers"},
+            {"role": "user", "content": "I dont want anything else, just the name of the website. For example: Youtube, Google, Facebook, etc."},
+            {"role": "user", "content": f"Extract the name of the website from the given metadata: ```{metadata}```"},
+        ]
+
+        description_messages = [
+            {"role": "system", "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers"},
+            {"role": "user", "content": "I dont want anything else, just the description."},
+            {"role": "user", "content": f"Extract a brief description of the website from the given metadata: ```{metadata}```"},
+        ]
+
+        title_res = gpt.get_response(title_messages)
+        description_res = gpt.get_response(description_messages)
+
+
+        return { "title": title_res.response, "description": description_res.response }
