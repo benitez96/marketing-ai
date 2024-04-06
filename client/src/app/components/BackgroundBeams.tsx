@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@nextui-org/react";
@@ -138,3 +137,7 @@ export const BackgroundBeams = React.memo(
     );
   }
 );
+
+BackgroundBeams.displayName = 'BackgroundBeams';
+
+export default BackgroundBeams
