@@ -19,7 +19,7 @@ const Sidebar = () => {
                 as={Link}
                 color="primary"
                 variant="solid"
-                className='bg-rose-600 p-2 flex w-[80%]'
+                className='bg-rose-600 p-2 flex w-[80%] text-white'
                 endContent={<MdOutlineKeyboardArrowRight />}
             >
                 Generate
