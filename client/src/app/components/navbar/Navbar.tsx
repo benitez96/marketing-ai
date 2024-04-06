@@ -64,9 +64,6 @@ export default function Navigation() {
                 }
             </Loader>
 
-
-
-
             <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
