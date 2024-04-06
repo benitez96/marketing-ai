@@ -55,7 +55,7 @@ export const InputUrl = () => {
 
                 <Button color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
                     <p className='hidden md:block'>Scan My Website</p>
-                    <CgEnter className='block' style={{ width: '40px', height: '40px' }} />
+                    <CgEnter className='block text-white' style={{ width: '40px', height: '40px' }} />
                 </Button>
 
             </div>
