@@ -104,9 +104,7 @@ export default function Login() {
                   </Button>
                 </div>
                 <Divider className='my-5' />
-                <p>Don't have an account yet ?
-                  {/* <Link to='/register' className='text-primary'>Registrate</Link> */}
-                </p>
+                <p>Don&apos;t have an account yet ?</p>
               </CardFooter>
 
               <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
