@@ -100,7 +100,7 @@ export default function Login() {
                     type='submit'
                     className='text-white'
                   >
-                    Log in
+                    Sign in
                   </Button>
                 </div>
                 <Divider className='my-5' />
