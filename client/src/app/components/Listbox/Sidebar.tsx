@@ -18,7 +18,7 @@ const Sidebar = () => {
                     <NavbarMenuToggle />
                 </NavbarContent>
 
-                <NavbarMenu className='ml-auto mr-auto w-[80%] mt-12 bg-slate-50 rounded-smal'>
+                <NavbarMenu className='ml-auto mr-auto w-[80%] mt-8 bg-slate-50 rounded-smal'>
                     {[
                         {
                             label: "Dashboard",
