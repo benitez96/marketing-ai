@@ -1,16 +1,25 @@
 'use client'
 
 import React from 'react'
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Listbox, ListboxItem, Navbar, NavbarContent, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
 import { Link, Button } from "@nextui-org/react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 
+
 import items from './items';
+import { deleteToken } from '@/actions/auth';
 
 const Sidebar = () => {
     const pathname = usePathname()
+    const router = useRouter()
+
+    const logout = async () => {
+        await deleteToken()
+        router.push('/')
+    }
+
     return (
         <div className="w-full h-full sm:max-w-[260px] px-1 py-2 rounded-small border-default-200 dark:border-default-100">
             <Navbar disableAnimation isBordered className='sm:hidden rounded-smal bg-slate-50'>
@@ -18,8 +27,12 @@ const Sidebar = () => {
                     <NavbarMenuToggle />
                 </NavbarContent>
 
-                <NavbarMenu className='ml-auto mr-auto w-[80%] mt-8 bg-slate-50 rounded-smal'>
+                <NavbarMenu className='ml-auto mr-auto w-[80%] mt-8 bg-slate-50 rounded-smal text-white'>
                     {[
+                        {
+                            label: "Generate",
+                            path: "/dashboard/generate"
+                        },
                         {
                             label: "Dashboard",
                             path: "/dashboard"
@@ -27,17 +40,25 @@ const Sidebar = () => {
                         {
                             label: "Projects",
                             path: "/dashboard/projects"
-                        }
+                        },
                     ].map((item, index) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
                             <Link
-                                className=""
+                                className="text-black hover:text-blue-500 hover:underline"
                                 href={item.path}
                             >
                                 {item.label}
                             </Link>
                         </NavbarMenuItem>
                     ))}
+                    <Button
+                        color="primary"
+                        variant="solid"
+                        className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+                        onClick={() => logout()}
+                    >
+                        Log out
+                    </Button>
                 </NavbarMenu>
             </Navbar>
 

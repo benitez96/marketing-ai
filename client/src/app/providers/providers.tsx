@@ -12,6 +12,7 @@ type ThemeContextType = {
     user: IUser,
     isLoading: boolean
     handleUser: (user: IUser) => void
+    clearUser: () => void
 };
 
 export const ThemeContext = createContext<ThemeContextType>(null!)
@@ -47,9 +48,16 @@ export default function ThemeProvider({ children }: Props) {
         setCurrentUser(user);
     }, [currentUser]);
 
+    const clearUser = () => {
+        setIsLoading(true)
+        setCurrentUser({ id: 0, username: '', email: '' })
+        setIsLoading(false)
+    }
+
     const contextValue = useMemo(() => ({
         user: currentUser,
         handleUser,
+        clearUser,
         isLoading
     }), [currentUser, handleUser, isLoading]);
 
