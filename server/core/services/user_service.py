@@ -26,7 +26,7 @@ class UserService:
         self.user_repository = user_repository
 
     def create_user(self, user: User):
-        if self.user_repository.get_user_by_username(username=user.username):
+        if self.user_repository.get_user_by_username_or_email(username=user.username):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists"
             )
@@ -50,7 +50,7 @@ class UserService:
         return Token(access_token=access_token, token_type="bearer")
 
     def _authenticate_user(self, username: str, password: str):
-        user = self.user_repository.get_user_by_username(username)
+        user = self.user_repository.get_user_by_username_or_email(username)
         if user and self._verify_password(password, user.password):
             return user
         return None
