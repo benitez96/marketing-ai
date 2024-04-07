@@ -29,7 +29,11 @@ class BaseModel(SQLModel):
 
 class User(BaseModel, table=True):
     username: str = Field(index=True, unique=True)
-    email: str
+    email: str = Field(index=True, unique=True)
+
+    firstname: str
+    lastname: str
+
     password: str
     active: Optional[bool] = Field(default=True)
     is_admin: Optional[bool] = Field(default=False)

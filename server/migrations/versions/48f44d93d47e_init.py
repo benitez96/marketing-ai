@@ -1,4 +1,5 @@
 import sqlmodel
+
 """init
 
 Revision ID: 48f44d93d47e
@@ -13,7 +14,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '48f44d93d47e'
+revision: str = "48f44d93d47e"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
