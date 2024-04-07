@@ -1,4 +1,5 @@
 from typing import Optional, Union
+from sqlalchemy.orm import relationship
 from sqlmodel import Column, Field, Relationship, SQLModel, JSON
 from datetime import datetime
 from enum import Enum
@@ -28,7 +29,11 @@ class BaseModel(SQLModel):
 
 class User(BaseModel, table=True):
     username: str = Field(index=True, unique=True)
-    email: str
+    email: str = Field(index=True, unique=True)
+
+    firstname: str
+    lastname: str
+
     password: str
     active: Optional[bool] = Field(default=True)
     is_admin: Optional[bool] = Field(default=False)
@@ -49,7 +54,10 @@ class Chat(BaseModel, table=True):
         default={}, sa_column=Column(JSON)
     )
 
-    prompts: Optional[list["Prompt"]] = Relationship(back_populates="chat")
+    prompts: Optional[list["Prompt"]] = Relationship(
+        back_populates="chat",
+        sa_relationship=relationship("Prompt", cascade="all, delete"),
+    )
 
 
 class Prompt(BaseModel, table=True):

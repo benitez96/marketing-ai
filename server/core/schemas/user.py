@@ -6,12 +6,16 @@ class UserRead(SQLModel):
     id: int
     username: str
     email: str
+    firstname: str
+    lastname: str
 
 
 class UserCreate(SQLModel):
     username: str
     email: str
     password: str
+    firstname: str
+    lastname: str
 
 
 class UserReadWithChats(UserRead):

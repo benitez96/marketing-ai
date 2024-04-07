@@ -1,7 +1,13 @@
 from typing import Annotated
 from fastapi import APIRouter, Body, Depends
 from core.models import Chat, User
-from core.schemas.chat import AnalyzedMetadata, ChatCreate, ChatRead, ChatReadDetail, ChatUpdate
+from core.schemas.chat import (
+    AnalyzedMetadata,
+    ChatCreate,
+    ChatRead,
+    ChatReadDetail,
+    ChatUpdate,
+)
 from core.schemas.prompt import PromptRead
 from core.services.auth_service import get_current_user
 from core.services.chat_service import ChatService
@@ -68,7 +74,12 @@ async def generate_prompt(
 ):
     return chat_service.init_chat(user=user, initial_conf=config)
 
-@router.post("/analyze_metadata", response_model=AnalyzedMetadata, summary="Get a title & description from a give metadata website")
+
+@router.post(
+    "/analyze_metadata",
+    response_model=AnalyzedMetadata,
+    summary="Get a title & description from a give metadata website",
+)
 async def analyze_metadata(
     *,
     _: Annotated[User, Depends(get_current_user)],
@@ -76,3 +87,13 @@ async def analyze_metadata(
     metadata: Annotated[str, Body(embed=True)],
 ):
     return chat_service.analyze_metadata(metadata=metadata)
+
+
+@router.delete("/{chat_id}", response_model=ChatReadDetail, summary="Delete chat")
+async def delete_chat(
+    *,
+    user: Annotated[User, Depends(get_current_user)],
+    chat_service: ChatService = Depends(ChatService),
+    chat_id: int,
+):
+    return chat_service.delete_chat(user=user, chat_id=chat_id)
