@@ -2,6 +2,7 @@ import { deleteToken } from "@/actions/auth";
 import { LuHome } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { TfiWrite } from "react-icons/tfi";
+import { RiAccountCircleLine } from "react-icons/ri";
 
 const logout = async () => {
     await deleteToken()
@@ -27,7 +28,7 @@ const items = [
         key: 'account-key',
         href: "/dashboard/account",
         label: "Account",
-        startContent: <LuHome />,
+        startContent: <RiAccountCircleLine />,
         description: "Navigate back to home"
     },
     {

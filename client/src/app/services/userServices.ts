@@ -36,6 +36,32 @@ export const login = async (user: ILogin): Promise<LoginResponse> => {
     }
 }
 
+export const signUp = async (data: any): Promise<any> => {
+    try {
+        const response = await api.post('/users', data)
+        if (response.status === 200) {
+            await storeToken(data)
+            return {
+                success: true,
+                access_token: data.access_token,
+            }
+        }
+        else {
+            return {
+                success: false,
+                access_token: '',
+            }
+        }
+    }
+    catch (err) {
+        console.error(err)
+        return {
+            success: false,
+            access_token: '',
+        }
+    }
+}
+
 
 export const logout = async () => {
     await deleteToken()
