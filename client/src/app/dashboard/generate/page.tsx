@@ -4,7 +4,7 @@ import { getForm } from '@/services/server/formServices';
 const GeneratePage = async () => {
     const form = await getForm()
     return (
-        <div className="rounded-xl sm:m-4 border p-4 w-full bg-white flex flex-col items-center">
+        <div className='flex items-center flex-col'>
             <CreateForm form={form} />
         </div>
     )

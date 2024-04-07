@@ -57,7 +57,11 @@ const Projects = ({ projects }: Props) => {
     }, []);
 
     return (
-        <Table aria-label="Example table with custom cells">
+        <Table aria-label="Example table with custom cells"
+            classNames={{
+                wrapper: "shadow-none",
+            }}
+        >
             <TableHeader columns={columns}>
                 {(column) => (
                     <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>

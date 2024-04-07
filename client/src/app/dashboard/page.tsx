@@ -1,9 +1,13 @@
-import { InputUrl } from '@/components/Input'
+import { User } from '@/components/user/User';
+import { Divider } from '@nextui-org/react';
+import Link from 'next/link';
 
 const DashboardPage = async () => {
     return (
-        <h1>Working</h1>
-    )
+        <div>
+            <User />
+        </div>
+    );
 }
 
 export default DashboardPage

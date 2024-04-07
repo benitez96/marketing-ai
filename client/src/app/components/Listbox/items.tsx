@@ -24,6 +24,13 @@ const items = [
         description: "Navigate back to home"
     },
     {
+        key: 'account-key',
+        href: "/dashboard/account",
+        label: "Account",
+        startContent: <LuHome />,
+        description: "Navigate back to home"
+    },
+    {
         key: 'projects-key',
         href: "/dashboard/projects",
         label: "Projects",
@@ -38,6 +45,7 @@ const items = [
         href: "/",
         onClick: () => logout(),
     },
+    
 ];
 
 export default items

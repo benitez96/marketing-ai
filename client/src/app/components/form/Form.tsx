@@ -4,17 +4,27 @@ import { Form, Formik } from 'formik'
 
 import { IFormInput } from "interfaces/form"
 import { InputUrl } from '../Input'
+import { api } from '@/utils/axios'
 
 interface Props {
     form: IFormInput[]
 }
 
 export const CreateForm = ({ form }: Props) => {
+
+    const handleSubmit = async (e: any) => {
+        console.log(e)
+        const body = e
+        const response = await api.post('/chats/init', body)
+        console.log('Response ===>', response.data)
+    }
+
+
     return (
         <div className='w-5/6 flex flex-col gap-4'>
-            <InputUrl />
-            <Formik initialValues={{}} onSubmit={(e: any) => alert(JSON.stringify(e))}>
+            <Formik initialValues={{}} onSubmit={handleSubmit}>
                 <Form className='flex flex-col gap-6' >
+                    <InputUrl />
                     {
                         form.map((input: IFormInput) => {
                             return (

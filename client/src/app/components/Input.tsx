@@ -1,9 +1,10 @@
 "use client"
 import React, { useState } from 'react'
+import { useFormikContext } from 'formik';
 import { Button, Input, Textarea } from "@nextui-org/react";
-import { analyzeUrl } from '@/services/server/scrappingServices';
 import { CgEnter } from "react-icons/cg";
 
+import { analyzeUrl } from '@/services/server/scrappingServices';
 import styles from './input.module.css'
 
 export const InputUrl = () => {
@@ -13,6 +14,8 @@ export const InputUrl = () => {
         name: '',
         description: ''
     })
+    const { setFieldValue } = useFormikContext();
+
     const [isValidated, setIsValidated] = useState(false)
 
     const fetchData = async () => {
@@ -23,9 +26,11 @@ export const InputUrl = () => {
         const analyzedWebsite = await analyzeUrl(website.url)
         setWebsite({
             ...website,
-            description: analyzedWebsite.product_description.description,
-            name: analyzedWebsite.product_description.title
+            description: analyzedWebsite.description,
+            name: analyzedWebsite.title
         })
+        setFieldValue('name', analyzedWebsite.title)
+        setFieldValue('description', analyzedWebsite.description)
         setLoading(false)
     }
 
@@ -46,6 +51,9 @@ export const InputUrl = () => {
         if (name === 'url') {
             validate(e.target.value)
         }
+        if(name !== 'url'){
+            setFieldValue(name, value)
+        }
     }
 
     return (
@@ -53,15 +61,23 @@ export const InputUrl = () => {
             <div className='flex flex-row items-center gap-4'>
                 <Input type="string" label="URL" placeholder="Enter your website url" value={website.url} name='url' onChange={handleOnChange} />
 
-                <Button color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
-                    <p className='hidden md:block'>Scan My Website</p>
+                <Button className='text-white' color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
+                    <p className='hidden md:block text-white'>Scan My Website</p>
                     <CgEnter className='block text-white' style={{ width: '40px', height: '40px' }} />
                 </Button>
 
             </div>
-            <Input classNames={{
-                inputWrapper: [loading && styles.loading]
-            }} type="string" label="Product/Service Name" placeholder="Product/Service Name (Example: KangarooWriter)" value={website.name} name='name' onChange={handleOnChange} />
+            <Input
+                classNames={{
+                    inputWrapper: [loading && styles.loading]
+                }}
+                type="string"
+                label="Product/Service Name"
+                placeholder="Product/Service Name (Example: KangarooWriter)"
+                value={website.name}
+                name='name'
+                onChange={handleOnChange}
+            />
             <Textarea
                 classNames={{
                     inputWrapper: [loading && styles.loading]
