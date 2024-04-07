@@ -104,12 +104,10 @@ class ChatService:
 
         return chat
 
-
     def analyze_metadata(
         self,
         metadata: str,
     ) -> AnalyzedMetadata:
-
         model = self.aimodel_repository.get_by_name("gpt-3.5-turbo")
 
         if not model:
@@ -126,19 +124,44 @@ class ChatService:
         )
 
         title_messages = [
-            {"role": "system", "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers"},
-            {"role": "user", "content": "I dont want anything else, just the name of the website. For example: Youtube, Google, Facebook, etc."},
-            {"role": "user", "content": f"Extract the name of the website from the given metadata: ```{metadata}```"},
+            {
+                "role": "system",
+                "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers",
+            },
+            {
+                "role": "user",
+                "content": "I dont want anything else, just the name of the website. For example: Youtube, Google, Facebook, etc.",
+            },
+            {
+                "role": "user",
+                "content": f"Extract the name of the website from the given metadata: ```{metadata}```",
+            },
         ]
 
         description_messages = [
-            {"role": "system", "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers"},
-            {"role": "user", "content": "I dont want anything else, just the description."},
-            {"role": "user", "content": f"Extract a brief description of the website from the given metadata: ```{metadata}```"},
+            {
+                "role": "system",
+                "content": "You are a useful assistant. You always answer precisely, you do not give introductions to the answers",
+            },
+            {
+                "role": "user",
+                "content": "I dont want anything else, just the description.",
+            },
+            {
+                "role": "user",
+                "content": f"Extract a brief description of the website from the given metadata: ```{metadata}```",
+            },
         ]
 
         title_res = gpt.get_response(title_messages)
         description_res = gpt.get_response(description_messages)
 
+        return {"title": title_res.response, "description": description_res.response}
 
-        return { "title": title_res.response, "description": description_res.response }
+    def delete_chat(self, user: User, chat_id: int):
+        chat = self.chat_repository.get(chat_id)
+
+        if user.id != chat.user_id:
+            raise HTTPException(status_code=403, detail="User not authorized")
+
+        return self.chat_repository.delete(chat_id)
