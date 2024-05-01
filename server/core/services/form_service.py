@@ -49,7 +49,6 @@ class FormService:
 
         return gpt.get_response(messages)
 
-
     def call_form_by_slug(self, form_name: str, params: dict[str, str]) -> Prompt:
         form = self.form_repository.get_by_name(form_name)
         model_name = getattr(params, "ai_model", "gpt-3.5-turbo")

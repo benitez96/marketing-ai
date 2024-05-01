@@ -35,6 +35,7 @@ async def call_form(
 ):
     return form_service.call_form(form_id, params)
 
+
 @router.post("/{slug:str}", summary="Call a specific form")
 async def call_form_by_slug(
     _: Annotated[User, Depends(get_current_user)],

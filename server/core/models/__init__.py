@@ -26,6 +26,7 @@ class Role(str, Enum):
 class BaseModel(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True)
 
+
 class Brand(BaseModel, table=True):
     name: str
     description: Optional[str] = None
@@ -36,10 +37,12 @@ class Brand(BaseModel, table=True):
     target_audience: str
     current_email_list_size: int
 
-    niche: str # TODO: could be a relationship with a Niche model
+    niche: str  # TODO: could be a relationship with a Niche model
 
     user_id: int = Field(foreign_key="user.id")
-    user: "User"= Relationship(back_populates="brands")
+    user: "User" = Relationship(back_populates="brands")
+
+    sessions: list["Session"] = Relationship(back_populates="brand")
 
 
 class User(BaseModel, table=True):

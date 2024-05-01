@@ -3,7 +3,12 @@ from fastapi import Depends, HTTPException, status
 from jinja2 import Template
 from core.dependencies import get_repository
 from core.models import Session, Prompt, User, Input
-from core.schemas.session import AnalyzedMetadata, SessionCreate, SessionReadDetail, SessionUpdate
+from core.schemas.session import (
+    AnalyzedMetadata,
+    SessionCreate,
+    SessionReadDetail,
+    SessionUpdate,
+)
 from core.services.gpt_service import OpenAIService
 from core.settings import get_settings
 from infrastructure.repositories.aimodel_repository import AIModelRepository
@@ -20,7 +25,9 @@ settings = get_settings()
 class SessionService:
     def __init__(
         self,
-        session_repository: SessionRepository = Depends(get_repository(SessionRepository)),
+        session_repository: SessionRepository = Depends(
+            get_repository(SessionRepository)
+        ),
         input_repository: InputRepository = Depends(get_repository(InputRepository)),
         aimodel_repository: AIModelRepository = Depends(
             get_repository(AIModelRepository)
@@ -42,7 +49,9 @@ class SessionService:
         new_session = Session(**session.model_dump(), user=user)
         return self.session_repository.create(new_session)
 
-    def update_session(self, user: User, session_id: int, session: SessionUpdate) -> SessionReadDetail:
+    def update_session(
+        self, user: User, session_id: int, session: SessionUpdate
+    ) -> SessionReadDetail:
         session_to_edit = self.session_repository.get(id=session_id)
 
         if user.id != session_to_edit.user_id:
