@@ -6,6 +6,7 @@ from core.models import Session, Prompt, User, Input
 from core.schemas.session import (
     AnalyzedMetadata,
     SessionCreate,
+    SessionRead,
     SessionReadDetail,
     SessionUpdate,
 )
@@ -13,6 +14,7 @@ from core.services.gpt_service import OpenAIService
 from core.settings import get_settings
 from infrastructure.repositories.aimodel_repository import AIModelRepository
 from infrastructure.repositories.session_repository import SessionRepository
+from infrastructure.repositories.brand_repository import BrandRepository
 
 from pprint import pprint as print
 
@@ -32,10 +34,12 @@ class SessionService:
         aimodel_repository: AIModelRepository = Depends(
             get_repository(AIModelRepository)
         ),
+        brand_repository: BrandRepository = Depends(get_repository(BrandRepository)),
     ) -> None:
         self.session_repository = session_repository
         self.aimodel_repository = aimodel_repository
         self.input_repository = input_repository
+        self.brand_repository = brand_repository
 
     def get_session_detail(self, user: User, session_id: int) -> Session:
         session = self.session_repository.get(session_id)
@@ -44,10 +48,6 @@ class SessionService:
             raise HTTPException(status_code=403, detail="User not authorized")
 
         return session
-
-    def create_session(self, user: User, session: SessionCreate) -> Session:
-        new_session = Session(**session.model_dump(), user=user)
-        return self.session_repository.create(new_session)
 
     def update_session(
         self, user: User, session_id: int, session: SessionUpdate
@@ -60,18 +60,13 @@ class SessionService:
         return self.session_repository.update(session_id, session)
 
     def init_session(
-        self, user: User, initial_conf: dict[str, str], session_id: Optional[int] = None
+        self,
+        user: User,
+        brand_id: int,
+        initial_conf: dict[str, str],
     ) -> Session:
-        input_model = initial_conf.pop("ai_model")
-        model = self.aimodel_repository.get_by_name(input_model)
-
-        if not model:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="GPT model must be provided.",
-            )
-
-        model_name = model.name or "gpt-3.5-turbo"
+        model = self.aimodel_repository.get_by_name(settings.gpt_model)
+        brand = self.brand_repository.get_brand(user, brand_id)
         inputs = self.input_repository.get_form_inputs(user.suscription.product.form)
 
         messages = []
@@ -88,48 +83,33 @@ class SessionService:
 
         gpt = OpenAIService(
             settings.gpt_key,
-            model_name,
+            model.name,
         )
 
         prompt = gpt.get_response(messages)
 
-        if not session_id:
-            res = eval(prompt.response)
-            session = self.create_session(
-                user=user,
-                session=SessionCreate(
-                    name=res.get("title", ""), description=res.get("description", "")
-                ),
-            )
-            session_id = session.id
+        res = eval(prompt.response)
 
-        session = self.get_session_detail(user=user, session_id=session_id)
-        session.config = initial_conf
+        session = Session(
+            user=user,
+            name=res.get("title", ""),
+            description=res.get("description", ""),
+            brand=brand,
+            config=initial_conf,
+            prompts=[Prompt(**prompt.model_dump(), ai_model=model)],
+        )
 
-        db_prompt = Prompt(**prompt.model_dump(), session=session, ai_model=model)
-        session.prompts.append(db_prompt)
-
-        self.session_repository.update(session_id, session)
-
-        return session
+        return self.session_repository.create(session)
 
     def analyze_metadata(
         self,
         metadata: str,
     ) -> AnalyzedMetadata:
-        model = self.aimodel_repository.get_by_name("gpt-3.5-turbo")
-
-        if not model:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="GPT model must be provided.",
-            )
-
-        model_name = model.name or "gpt-3.5-turbo"
+        model = self.aimodel_repository.get_by_name(settings.gpt_model)
 
         gpt = OpenAIService(
             settings.gpt_key,
-            model_name,
+            model.name,
         )
 
         title_messages = [

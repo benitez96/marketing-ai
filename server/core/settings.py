@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     algorithm: str
     access_token_expire_minutes: int
 
+    gpt_model: str = "gpt-3.5-turbo"
+
     db_host: str = ""
     db_port: int = 5432
     postgres_db: str = ""

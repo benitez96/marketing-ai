@@ -23,6 +23,8 @@ class SessionCreate(SQLModel):
     name: str
     description: Optional[str] = None
 
+    brand_id: int
+
 
 class SessionUpdate(SQLModel):
     name: Optional[str] = None

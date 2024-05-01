@@ -1,14 +1,12 @@
 from typing import Annotated
 from fastapi import APIRouter, Body, Depends
-from core.models import Session, User
+from core.models import User
 from core.schemas.session import (
     AnalyzedMetadata,
-    SessionCreate,
     SessionRead,
     SessionReadDetail,
     SessionUpdate,
 )
-from core.schemas.prompt import PromptRead
 from core.services.auth_service import get_current_user
 from core.services.session_service import SessionService
 
@@ -23,18 +21,25 @@ async def get_sessions(
     return user.sessions
 
 
-@router.post("/", response_model=SessionReadDetail, summary="Create session")
-async def create_session(
+@router.post(
+    "/{brand_id:int}",
+    response_model=SessionReadDetail,
+    summary="Create session prompt",
+)
+async def generate_prompt(
     *,
     user: Annotated[User, Depends(get_current_user)],
+    brand_id: int,
     session_service: SessionService = Depends(SessionService),
-    session: SessionCreate,
+    config: dict[str, str],
 ):
-    return session_service.create_session(user=user, session=session)
+    return session_service.init_session(
+        user=user, brand_id=brand_id, initial_conf=config
+    )
 
 
 @router.patch(
-    "/{session_id}", response_model=SessionReadDetail, summary="Create session"
+    "/{session_id}", response_model=SessionReadDetail, summary="Update session"
 )
 async def update_session(
     *,
@@ -58,31 +63,6 @@ async def get_session(
     session_id: int,
 ):
     return session_service.get_session_detail(user=user, session_id=session_id)
-
-
-@router.post(
-    "/{session_id}/init", response_model=PromptRead, summary="Create session prompt"
-)
-async def generate_initial_prompt(
-    *,
-    user: Annotated[User, Depends(get_current_user)],
-    session_service: SessionService = Depends(SessionService),
-    session_id: int,
-    config: dict[str, str],
-):
-    return session_service.init_session(
-        user=user, session_id=session_id, initial_conf=config
-    )
-
-
-@router.post("/init", response_model=SessionReadDetail, summary="Create session prompt")
-async def generate_prompt(
-    *,
-    user: Annotated[User, Depends(get_current_user)],
-    session_service: SessionService = Depends(SessionService),
-    config: dict[str, str],
-):
-    return session_service.init_session(user=user, initial_conf=config)
 
 
 @router.post(
