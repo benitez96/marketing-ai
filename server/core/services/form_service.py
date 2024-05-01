@@ -48,3 +48,26 @@ class FormService:
         )
 
         return gpt.get_response(messages)
+
+    def call_form_by_slug(self, form_name: str, params: dict[str, str]) -> Prompt:
+        form = self.form_repository.get_by_name(form_name)
+        model_name = getattr(params, "ai_model", "gpt-3.5-turbo")
+
+        inputs = self.input_repository.get_form_inputs(form)
+
+        messages = []
+        for input in inputs:
+            if input.name == "ai_model":
+                continue
+            template = Template(input.template)
+            ctx = (
+                params if input.source == "user" else {input.name: input.default_value}
+            )
+            messages.append({"role": input.role.value, "content": template.render(ctx)})
+
+        gpt = OpenAIService(
+            settings.gpt_key,
+            model_name,
+        )
+
+        return gpt.get_response(messages)

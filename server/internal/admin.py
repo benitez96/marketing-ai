@@ -6,7 +6,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
 
 
-class ChatView(ModelView):
+class SessionView(ModelView):
     exclude_fields_from_create = ["prompts"]
     fields = ["name", "description", "user", "config"]
 
@@ -23,7 +23,7 @@ def mount_admin(app):
     # Add view
     admin.add_view(ModelView(models.User, icon="fa fa-user"))
     admin.add_view(ModelView(models.Subscription, icon="fa-solid fa-ticket"))
-    admin.add_view(ChatView(models.Chat, icon="fa fa-comment"))
+    admin.add_view(SessionView(models.Session, icon="fa fa-comment"))
     admin.add_view(ModelView(models.Prompt, icon="fa-solid fa-terminal"))
     admin.add_view(ModelView(models.Product, icon="fa-brands fa-product-hunt"))
     admin.add_view(ModelView(models.Form, icon="fa-solid fa-align-justify"))

@@ -26,11 +26,21 @@ async def get_free_form_fields(
     return form_service.get_form()
 
 
-@router.post("/{form_id}", summary="Call a specific form")
+@router.post("/{form_id:int}", summary="Call a specific form")
 async def call_form(
-    user: Annotated[User, Depends(get_current_user)],
+    _: Annotated[User, Depends(get_current_user)],
     form_id: int,
     params: dict[str, str],
     form_service: FormService = Depends(FormService),
 ):
     return form_service.call_form(form_id, params)
+
+
+@router.post("/{slug:str}", summary="Call a specific form")
+async def call_form_by_slug(
+    _: Annotated[User, Depends(get_current_user)],
+    slug: str,
+    params: dict[str, str],
+    form_service: FormService = Depends(FormService),
+):
+    return form_service.call_form_by_slug(slug, params)

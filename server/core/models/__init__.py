@@ -27,6 +27,24 @@ class BaseModel(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True)
 
 
+class Brand(BaseModel, table=True):
+    name: str
+    description: Optional[str] = None
+
+    mission_statement: str
+    best_selling_products: str
+    site_url: str
+    target_audience: str
+    current_email_list_size: int
+
+    niche: str  # TODO: could be a relationship with a Niche model
+
+    user_id: int = Field(foreign_key="user.id")
+    user: "User" = Relationship(back_populates="brands")
+
+    sessions: list["Session"] = Relationship(back_populates="brand")
+
+
 class User(BaseModel, table=True):
     username: str = Field(index=True, unique=True)
     email: str = Field(index=True, unique=True)
@@ -38,24 +56,27 @@ class User(BaseModel, table=True):
     active: Optional[bool] = Field(default=True)
     is_admin: Optional[bool] = Field(default=False)
 
-    chats: list["Chat"] = Relationship(back_populates="user")
-
+    sessions: list["Session"] = Relationship(back_populates="user")
+    brands: list["Brand"] = Relationship(back_populates="user")
     suscription: "Subscription" = Relationship(back_populates="users")
 
 
-class Chat(BaseModel, table=True):
+class Session(BaseModel, table=True):
     name: str
     description: Optional[str] = None
 
     user_id: int = Field(foreign_key="user.id")
-    user: User = Relationship(back_populates="chats")
+    user: User = Relationship(back_populates="sessions")
+
+    brand_id: int = Field(foreign_key="brand.id")
+    brand: Brand = Relationship(back_populates="sessions")
 
     config: Optional[Union[list[dict], dict]] = Field(
         default={}, sa_column=Column(JSON)
     )
 
     prompts: Optional[list["Prompt"]] = Relationship(
-        back_populates="chat",
+        back_populates="session",
         sa_relationship=relationship("Prompt", cascade="all, delete"),
     )
 
@@ -68,8 +89,8 @@ class Prompt(BaseModel, table=True):
     visible: Optional[bool] = Field(default=True)
 
     # Relations
-    chat_id: int = Field(foreign_key="chat.id")
-    chat: Chat = Relationship(back_populates="prompts")
+    session_id: int = Field(foreign_key="session.id")
+    session: Session = Relationship(back_populates="prompts")
 
     ai_model_id: int = Field(foreign_key="aimodel.id")
     ai_model: "AIModel" = Relationship(back_populates="prompts")
