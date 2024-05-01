@@ -2,13 +2,13 @@ from typing import Optional
 from sqlmodel import SQLModel
 
 
-class ChatRead(SQLModel):
+class SessionRead(SQLModel):
     id: int
     name: str
     description: Optional[str] = None
 
 
-class ChatReadDetail(ChatRead):
+class SessionReadDetail(SessionRead):
     prompts: Optional[list["PromptRead"]] = []
     config: dict = {}
 
@@ -19,12 +19,12 @@ class PromptRead(SQLModel):
     response: str
 
 
-class ChatCreate(SQLModel):
+class SessionCreate(SQLModel):
     name: str
     description: Optional[str] = None
 
 
-class ChatUpdate(SQLModel):
+class SessionUpdate(SQLModel):
     name: Optional[str] = None
     description: Optional[str] = None
     config: Optional[dict] = None

@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Body, Depends
-from core.models import Chat, User
+from core.models import Session, User
 from core.schemas.chat import (
     AnalyzedMetadata,
     ChatCreate,
@@ -10,7 +10,7 @@ from core.schemas.chat import (
 )
 from core.schemas.prompt import PromptRead
 from core.services.auth_service import get_current_user
-from core.services.chat_service import ChatService
+from core.services.session_service import SessionService
 
 
 router = APIRouter()
@@ -27,52 +27,52 @@ async def get_chats(
 async def create_chat(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     chat: ChatCreate,
 ):
-    return chat_service.create_chat(user=user, chat=chat)
+    return session_service.create_chat(user=user, chat=chat)
 
 
 @router.patch("/{chat_id}", response_model=ChatReadDetail, summary="Create chat")
 async def update_chat(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     chat_id: int,
     chat: ChatUpdate,
 ):
-    return chat_service.update_chat(user=user, chat=chat, chat_id=chat_id)
+    return session_service.update_chat(user=user, chat=chat, chat_id=chat_id)
 
 
 @router.get("/{chat_id}", response_model=ChatReadDetail, summary="Get chat by id")
 async def get_chat(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     chat_id: int,
 ):
-    return chat_service.get_chat_detail(user=user, chat_id=chat_id)
+    return session_service.get_chat_detail(user=user, chat_id=chat_id)
 
 
 @router.post("/{chat_id}/init", response_model=PromptRead, summary="Create chat prompt")
 async def generate_initial_prompt(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     chat_id: int,
     config: dict[str, str],
 ):
-    return chat_service.init_chat(user=user, chat_id=chat_id, initial_conf=config)
+    return session_service.init_chat(user=user, chat_id=chat_id, initial_conf=config)
 
 
 @router.post("/init", response_model=ChatReadDetail, summary="Create chat prompt")
 async def generate_prompt(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     config: dict[str, str],
 ):
-    return chat_service.init_chat(user=user, initial_conf=config)
+    return session_service.init_chat(user=user, initial_conf=config)
 
 
 @router.post(
@@ -83,7 +83,7 @@ async def generate_prompt(
 async def analyze_metadata(
     *,
     _: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    session_service: SessionService = Depends(SessionService),
     metadata: Annotated[str, Body(embed=True)],
 ):
     return chat_service.analyze_metadata(metadata=metadata)
@@ -93,7 +93,7 @@ async def analyze_metadata(
 async def delete_chat(
     *,
     user: Annotated[User, Depends(get_current_user)],
-    chat_service: ChatService = Depends(ChatService),
+    chat_service: SessionService = Depends(SessionService),
     chat_id: int,
 ):
     return chat_service.delete_chat(user=user, chat_id=chat_id)
