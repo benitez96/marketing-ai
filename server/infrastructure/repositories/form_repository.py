@@ -52,3 +52,10 @@ class FormRepository(BaseRepository[Form]):
             raise HTTPException(status_code=404, detail="No inputs found")
 
         return inputs
+
+    def get_by_name(self, name: str) -> Form:
+        statement = select(Form).where(Form.name == name)
+        result = self.db.exec(statement).first()
+        if not result:
+            raise HTTPException(status_code=404, detail="Form not found")
+        return result
