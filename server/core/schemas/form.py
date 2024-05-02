@@ -1,14 +1,18 @@
-from typing import Optional, Union
+from typing import List, Optional, Union
+from core.models import Input
 from sqlmodel import SQLModel
 
 
 class FormRead(SQLModel):
+    id: int
     name: str
-    type: str
-    description: Optional[str] = None
-    default: Optional[str] = None
-    required: bool = False
-    enabled: bool = False
-    label: str
-    values: Optional[Union[list[dict], dict]]
-    placeholder: Optional[str] = None
+    display_name: str
+
+
+class FormDetail(SQLModel):
+    id: int
+    name: str
+    display_name: str
+    form_type: str
+    description: Optional[str]
+    inputs: list[Input]

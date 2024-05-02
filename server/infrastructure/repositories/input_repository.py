@@ -11,10 +11,15 @@ class InputRepository(BaseRepository[Input]):
     def model_type(self) -> Type[Input]:
         return Input
 
-    def get_form_inputs(self, form: Form) -> list[Input]:
+    def get_form_inputs(self, form_slug: str) -> list[Input]:
+        form: Form = self.db.exec(select(Form).where(Form.name == form_slug)).first()
+        if not form:
+            raise HTTPException(status_code=404, detail="Form not found")
+
         statement = (
             select(Input).where(Input.forms.contains(form)).order_by(Input.priority)
         )
+
         results = self.db.exec(statement)
 
         inputs = results.all()

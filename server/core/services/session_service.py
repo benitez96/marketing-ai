@@ -63,11 +63,12 @@ class SessionService:
         self,
         user: User,
         brand_id: int,
+        form_slug: str,
         initial_conf: dict[str, str],
     ) -> Session:
         model = self.aimodel_repository.get_by_name(settings.gpt_model)
         brand = self.brand_repository.get_brand(user, brand_id)
-        inputs = self.input_repository.get_form_inputs(user.suscription.product.form)
+        inputs = self.input_repository.get_form_inputs(form_slug)
 
         messages = []
         for input in inputs:

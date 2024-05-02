@@ -23,6 +23,11 @@ class Role(str, Enum):
     assistant = "assistant"
 
 
+class FormType(str, Enum):
+    campaign = "campaign"
+    flow = "flow"
+
+
 class BaseModel(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True)
 
@@ -155,6 +160,8 @@ class Form(BaseModel, table=True):
     description: Optional[str] = None
 
     is_public: bool = False
+
+    form_type: Optional[FormType]
 
     products: Optional[list["Product"]] = Relationship(back_populates="form")
 
