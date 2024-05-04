@@ -24,11 +24,11 @@ class FormService:
         return self.form_repository.get_by_name(name)
 
     def get_forms(self) -> list[Form]:
-        return self.form_repository.get_all()
+        return self.form_repository.get_public_forms()
 
     def call_form(self, form_id: int, params: dict[str, str]) -> Prompt:
         form = self.form_repository.get(form_id)
-        model_name = getattr(params, "ai_model", "gpt-3.5-turbo")
+        model_name = getattr(params, "ai_model", settings.gpt_model)
 
         inputs = self.input_repository.get_form_inputs(form)
 
@@ -51,7 +51,7 @@ class FormService:
 
     def call_form_by_slug(self, form_name: str, params: dict[str, str]) -> Prompt:
         form = self.form_repository.get_by_name(form_name)
-        model_name = getattr(params, "ai_model", "gpt-3.5-turbo")
+        model_name = getattr(params, "ai_model", settings.gpt_model)
 
         inputs = self.input_repository.get_form_inputs(form)
 
