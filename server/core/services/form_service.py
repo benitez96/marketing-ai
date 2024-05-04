@@ -1,7 +1,7 @@
 from fastapi import Depends
 from jinja2 import Template
 from core.dependencies import get_repository
-from core.models import Prompt, User, Input
+from core.models import Form, Prompt, Input
 from core.services.gpt_service import OpenAIService
 from core.settings import get_settings
 from infrastructure.repositories.form_repository import FormRepository
@@ -20,11 +20,11 @@ class FormService:
         self.form_repository = form_repository
         self.input_repository = input_repository
 
-    def get_form(self, user: User = None) -> list[Input]:
-        if not user:
-            return self.form_repository.get_free_form()
+    def get_form(self, name: str) -> list[Input]:
+        return self.form_repository.get_by_name(name)
 
-        return self.form_repository.get_form(user)
+    def get_forms(self) -> list[Form]:
+        return self.form_repository.get_all()
 
     def call_form(self, form_id: int, params: dict[str, str]) -> Prompt:
         form = self.form_repository.get(form_id)

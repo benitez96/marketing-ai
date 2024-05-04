@@ -22,7 +22,7 @@ async def get_sessions(
 
 
 @router.post(
-    "/{brand_id:int}",
+    "/{brand_id:int}/{form_slug:str}",
     response_model=SessionReadDetail,
     summary="Create session prompt",
 )
@@ -30,11 +30,12 @@ async def generate_prompt(
     *,
     user: Annotated[User, Depends(get_current_user)],
     brand_id: int,
+    form_slug: str,
     session_service: SessionService = Depends(SessionService),
     config: dict[str, str],
 ):
     return session_service.init_session(
-        user=user, brand_id=brand_id, initial_conf=config
+        user=user, brand_id=brand_id, initial_conf=config, form_slug=form_slug
     )
 
 
