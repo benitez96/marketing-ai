@@ -4,7 +4,7 @@ from jose import jwt
 from passlib.context import CryptContext
 from core.dependencies import get_repository
 from core.models import User
-from core.schemas.user import Token
+from core.schemas.user import Token, UserReadWithToken
 from core.settings import get_settings
 from infrastructure.repositories.user_repository import UserRepository
 
@@ -33,7 +33,12 @@ class UserService:
 
         user.password = self._get_password_hash(user.password)
 
-        return self.user_repository.create(user)
+        user = self.user_repository.create(user)
+        token = self._create_access_token(data={"user_id": user.id})
+
+        return UserReadWithToken(
+            access_token=token, token_type="bearer", **user.dict(), brands=user.brands
+        )
 
     def create_token(self, username: str, password: str):
         user = self._authenticate_user(username, password)
@@ -47,7 +52,15 @@ class UserService:
         access_token = self._create_access_token(
             data={"user_id": user.id}, expires_delta=access_token_expires
         )
-        return Token(access_token=access_token, token_type="bearer")
+        return UserReadWithToken(
+            access_token=access_token,
+            token_type="bearer",
+            **user.dict(),
+            brands=user.brands,
+        )
+
+    def update_user(self, user_id: int, user: User):
+        return self.user_repository.update(user_id, user)
 
     def _authenticate_user(self, username: str, password: str):
         user = self.user_repository.get_user_by_username_or_email(username)
