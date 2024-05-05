@@ -1,5 +1,6 @@
 from typing import Optional
 from sqlmodel import SQLModel
+from .brand import BrandRead
 
 
 class UserRead(SQLModel):
@@ -8,6 +9,7 @@ class UserRead(SQLModel):
     email: str
     firstname: str
     lastname: str
+    brands: list["BrandRead"] = []
 
 
 class UserCreate(SQLModel):
@@ -41,3 +43,15 @@ class Token(SQLModel):
 
 class TokenData(SQLModel):
     user_id: int | str
+
+
+class UserReadWithToken(UserRead, Token):
+    pass
+
+
+class UserUpdate(SQLModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None

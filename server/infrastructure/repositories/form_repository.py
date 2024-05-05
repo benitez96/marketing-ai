@@ -10,6 +10,11 @@ class FormRepository(BaseRepository[Form]):
     def model_type(self) -> Type[Form]:
         return Form
 
+    def get_public_forms(self) -> list[Form]:
+        statement = select(Form).where(Form.is_public)
+        results = self.db.exec(statement)
+        return results.all()
+
     def get_form(self, name: str) -> list[Input]:
         form = self.get_by_name(name)
 
