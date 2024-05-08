@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     if (token !== undefined) {
         request.cookies.set(TOKEN_NAME, token.value)
     }
-    if ((request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup') && token !== undefined) {
+    if ((request.nextUrl.pathname === '/login') && token !== undefined) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     if (UNAUTHORIZED_PATHNAMES.includes(request.nextUrl.pathname) && token === undefined) {

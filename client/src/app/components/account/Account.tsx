@@ -2,12 +2,12 @@
 
 import { Divider } from '@nextui-org/react';
 import Link from 'next/link';
-import { ThemeContext } from "providers/providers";
+import { UserContext } from "providers/providers";
 
 import { useContext } from 'react';
 
 export const Account = () => {
-    const { user } = useContext(ThemeContext)
+    const { user } = useContext(UserContext)
     return (
         <div className="" style={{ maxWidth: 800 }}>
             <h2 className="mb-10 text-4xl font-bold sm:text-5xl lg:text-6xl">Account</h2>

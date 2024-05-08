@@ -25,11 +25,14 @@ const config: Config = {
           primary: '#e11d48',
           secondary:'#9333ea',
         }
+        
       },
       'light': {
         colors: {
           primary: '#e11d48',
-          secondary:'#9333ea',
+          secondary:'#000',
+          focus:'#e11d48',
+          danger:'#e11d48',
         }
       }
     }

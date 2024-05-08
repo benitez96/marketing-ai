@@ -5,7 +5,8 @@ import { TfiWrite } from "react-icons/tfi";
 import { RiAccountCircleLine } from "react-icons/ri";
 
 const logout = async () => {
-    await deleteToken()
+    const result = await deleteToken()
+    console.log('logging out.... (2)', result)
 }
 interface SidebarItems {
     key: string;
@@ -42,11 +43,8 @@ const items = [
         key: "logout-key",
         label: "Logout",
         startContent: <LuLogOut />,
-        description: "Leave session",
-        href: "/",
-        onClick: () => logout(),
     },
-    
+
 ];
 
 export default items

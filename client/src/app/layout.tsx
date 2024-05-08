@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
 import Navigation from "@/components/navbar/Navbar";
-import ThemeProvider from "providers/providers";
+import UserProvider from "providers/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className="text-foreground bg-background min-h-[100dvh]">
-        <ThemeProvider>
+        <UserProvider>
           {children}
-        </ThemeProvider>
+        </UserProvider>
       </body>
     </html>
   );

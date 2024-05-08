@@ -24,8 +24,7 @@ export async function POST(request: Request) {
         // Return the extracted meta tag data
         return metaTagsData;
     });
-
-    const httpRequest = new HttpService().post<any>(`chats/analyze_metadata`, { metadata: JSON.stringify(metaTags) })
+    const httpRequest = new HttpService().post<any>(`sessions/analyze_metadata`, { metadata: JSON.stringify(metaTags) })
     const resp = await httpRequest.request
     await browser.close();
     return Response.json(resp.data)

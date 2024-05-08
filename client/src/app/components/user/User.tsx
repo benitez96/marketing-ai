@@ -1,12 +1,12 @@
 "use client"
 import { Card, Skeleton } from '@nextui-org/react';
-import { ThemeContext } from 'providers/providers'
+import { UserContext } from 'providers/providers'
 import React, { useContext } from 'react'
 import { AiOutlineHome } from "react-icons/ai";
 
 
 export const User = () => {
-    const { user, isLoading } = useContext(ThemeContext)
+    const { user, isLoading } = useContext(UserContext)
 
     return (
         <div className='w-80'>

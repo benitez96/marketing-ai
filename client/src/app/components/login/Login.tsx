@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { FcGoogle } from 'react-icons/fc'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -8,9 +8,12 @@ import { Card, CardHeader, CardBody, CardFooter, Input, Button, Divider } from "
 import { useRouter } from 'next/navigation'
 
 import { api } from '@/utils/axios';
-import { validationSchema } from '@/schemas'
+import { validationSchema } from 'entities'
 import * as userServices from '@/services/userServices'
 import { ILogin } from 'interfaces/user';
+import { UserContext } from 'providers/providers';
+import User from "entities/user";
+
 
 const initialValues: any = {
   username: '',
@@ -21,6 +24,9 @@ export default function Login() {
   const router = useRouter()
   const [isError, setIsError] = useState(false)
   const [pswVisible, setPswVisible] = useState(false)
+
+  const { handleUser } = useContext(UserContext)
+
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
   }
@@ -28,14 +34,24 @@ export default function Login() {
   const handleSubmit = async (values: ILogin) => {
     setIsError(false)
     const loginResponse = await userServices.login(values)
+
+
+    const loggedUser = new User(loginResponse.id, loginResponse.username, loginResponse.firstName, loginResponse.lastName, loginResponse.email, loginResponse.brands)
+
     if (loginResponse.success) {
-      api.interceptors.request.use(
-        (config: any) => {
-          config.headers['Authorization'] = `Bearer ${loginResponse.access_token}`
-          return config
-        },
-      )
-      router.push('/dashboard')
+      handleUser(loggedUser)
+      if (loggedUser.brands.length > 0) {
+        api.interceptors.request.use(
+          (config: any) => {
+            config.headers['Authorization'] = `Bearer ${loginResponse.access_token}`
+            return config
+          },
+        )
+        router.push('/dashboard')
+      }
+      else {
+        router.push('/signup')
+      }
     }
     else {
       setIsError(true)

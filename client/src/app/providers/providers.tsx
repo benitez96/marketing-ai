@@ -4,34 +4,35 @@ import { api } from "@/utils/axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname } from 'next/navigation'
+import { IUser } from "interfaces/user";
+import User from "entities/user";
 
-interface IUser {
-    id: number, username: string, email: string
-}
+
 type ThemeContextType = {
     user: IUser,
     isLoading: boolean
     handleUser: (user: IUser) => void
     clearUser: () => void
+    logoutUser: () => Promise<void>
 };
 
-export const ThemeContext = createContext<ThemeContextType>(null!)
+export const UserContext = createContext<ThemeContextType>(null!)
 
 interface Props {
     children: React.ReactNode
 }
 
-export default function ThemeProvider({ children }: Props) {
+export default function UserProvider({ children }: Props) {
     const router = useRouter()
     const pathname = usePathname()
-    const [currentUser, setCurrentUser] = useState<IUser>({ id: 0, username: '', email: '' });
+    const [currentUser, setCurrentUser] = useState<IUser>(User.init());
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         const getUser = async () => {
             try {
                 const user = (await api.get('/users/me')).data
-                setCurrentUser(user)
+                setCurrentUser(new User(user.id, user.username, user.firstname, user.lastname, user.email, user.brands))
                 setIsLoading(false)
             } catch (error) {
                 setIsLoading(false)
@@ -48,9 +49,18 @@ export default function ThemeProvider({ children }: Props) {
         setCurrentUser(user);
     }, [currentUser]);
 
+    const logoutUser = useCallback(async () => {
+        setIsLoading(true)
+        setCurrentUser(User.init())
+        await deleteToken()
+        router.push('/')
+        setIsLoading(false)
+    }, [currentUser]);
+
+
     const clearUser = () => {
         setIsLoading(true)
-        setCurrentUser({ id: 0, username: '', email: '' })
+        setCurrentUser(User.init())
         setIsLoading(false)
     }
 
@@ -58,12 +68,13 @@ export default function ThemeProvider({ children }: Props) {
         user: currentUser,
         handleUser,
         clearUser,
-        isLoading
+        isLoading,
+        logoutUser
     }), [currentUser, handleUser, isLoading]);
 
     return (
-        <ThemeContext.Provider value={contextValue}>
+        <UserContext.Provider value={contextValue}>
             {children}
-        </ThemeContext.Provider>
+        </UserContext.Provider>
     )
 }

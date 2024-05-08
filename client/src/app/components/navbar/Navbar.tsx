@@ -5,12 +5,12 @@ import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { menuItems } from "./static";
-import { ThemeContext } from "providers/providers";
+import { UserContext } from "providers/providers";
 import Loader from "../loader/Loader";
 import { ThemeSwitch } from "../ThemeSwitch";
 
 export default function Navigation() {
-    const { user, isLoading } = useContext(ThemeContext)
+    const { user, isLoading } = useContext(UserContext)
     return (
         <Navbar disableAnimation isBordered>
             <NavbarContent className="sm:hidden" justify="start">

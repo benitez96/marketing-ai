@@ -19,5 +19,8 @@ export async function getToken() {
 }
 
 export async function deleteToken() {
-    cookies().delete(TOKEN_NAME)
+    // return cookies().delete(TOKEN_NAME)
+
+    const cookieHeader = cookies();
+    return cookieHeader.delete(TOKEN_NAME);
 }

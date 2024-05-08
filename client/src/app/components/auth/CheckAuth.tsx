@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const CheckAuth = ({ user, children }: Props) => {
-    const router = useRouter()
+    // const router = useRouter()
 
     // useEffect(() => {
     //     const deleteCookie = async () => {

@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext } from "react";
 import { LuLoader2 } from "react-icons/lu";
 
-import { ThemeContext } from "providers/providers";
+import { UserContext } from "providers/providers";
 import styles from "./loader.module.css";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Loader = ({ children }: Props) => {
-  const { isLoading } = useContext(ThemeContext)
+  const { isLoading } = useContext(UserContext)
 
   if (isLoading) {
     return (

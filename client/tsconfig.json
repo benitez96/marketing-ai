@@ -24,7 +24,7 @@
       "@/styles/*": ["styles/*"],
       "@/services/*": ["services/*"],
       "@/actions/*": ["actions/*"],
-      "@/schemas": ["schemas/index.ts"]
+      "@/entities/*": ["entities/*"]
     }
   },
   "include": [

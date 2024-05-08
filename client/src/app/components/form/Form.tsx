@@ -13,10 +13,8 @@ interface Props {
 export const CreateForm = ({ form }: Props) => {
 
     const handleSubmit = async (e: any) => {
-        console.log(e)
         const body = e
         const response = await api.post('/chats/init', body)
-        console.log('Response ===>', response.data)
     }
 
 

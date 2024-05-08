@@ -1,31 +1,41 @@
 "use client"
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
-import { Input } from '@nextui-org/react';
-import * as userServices from '@/services/userServices'
+import { Button, Input } from '@nextui-org/react';
 
-const SignUp = () => {
+import * as userServices from '@/services/userServices'
+import { UserContext } from 'providers/providers';
+import User from '@/entities/user';
+
+const SignUp = ({ setStep }: any) => {
+    const { user, handleUser } = useContext(UserContext)
+    const disabled = user.firstName.length > 0
+
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: ''
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            password: user.firstName ? 'invalid' : ''
         },
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             const body = {
                 username: `${values.firstName} ${values.lastName}`,
                 email: values.email,
-                password: values.password
+                password: values.password,
+                firstname: values.firstName,
+                lastname: values.lastName
             }
-            const resp = userServices.signUp(body)
-            console.log(resp)
+            const data = await userServices.signUp(body)
+            handleUser(new User(data.id, data.username, data.firstName, data.lastName, data.email, data.brands))
+            if (data.success) {
+                setStep(2)
+            }
         },
     });
     return (
-        <div className='grid grid-cols-1 sm:grid-cols-2 h-screen'>
-            <div className='flex flex-col gap-4 items-center mt-10'>
-                <h2 className='text-xl font-bold'>KangarooWriter</h2>
+        <>
+            <div className='flex flex-col gap-4 items-center mt-4 transition duration-500 ease-in-out'>
                 <h3 className='text-xl font-normal'>Create Your Account</h3>
                 <div className='w-[80%]'>
                     <form onSubmit={formik.handleSubmit}>
@@ -33,6 +43,7 @@ const SignUp = () => {
                             <div className='flex flex-row justify-evenly gap-4'>
                                 <div className="flex-grow">
                                     <Input
+                                        disabled={disabled}
                                         id="firstName"
                                         label="First name"
                                         name="firstName"
@@ -44,6 +55,7 @@ const SignUp = () => {
                                 </div>
                                 <div className="flex-grow">
                                     <Input
+                                        disabled={disabled}
                                         id="lastName"
                                         placeholder="Enter your email"
                                         label="Last name"
@@ -56,6 +68,7 @@ const SignUp = () => {
                             </div>
                             <div className='flex flex-col gap-4'>
                                 <Input
+                                    disabled={disabled}
                                     placeholder="Enter your email"
                                     id="email"
                                     name="email"
@@ -65,6 +78,7 @@ const SignUp = () => {
                                     value={formik.values.email}
                                 />
                                 <Input
+                                    disabled={disabled}
                                     placeholder="Enter your password"
                                     id="password"
                                     name="password"
@@ -74,18 +88,15 @@ const SignUp = () => {
                                     value={formik.values.password}
                                 />
                             </div>
-                            <button className='bg-blue-600 rounded-md border text-white cursor-pointer p-2' type="submit">Continue</button>
+                            <Button isDisabled={disabled} onClick={formik.submitForm} color='danger' className='rounded-md border text-white cursor-pointer p-2' type="submit">Continue</Button>
                         </div>
                     </form>
                 </div>
 
 
             </div>
+        </>
 
-            <div className='bg-slate-400 hidden sm:block'>
-
-            </div>
-        </div>
     );
 };
 
