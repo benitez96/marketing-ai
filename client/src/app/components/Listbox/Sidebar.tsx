@@ -6,7 +6,6 @@ import { Listbox, ListboxItem, Navbar, NavbarContent, NavbarMenu, NavbarMenuItem
 import { Link, Button } from "@nextui-org/react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
-import { deleteToken } from '@/actions/auth';
 import { UserContext } from "providers/providers";
 import items from './items';
 

@@ -3,6 +3,7 @@ import { LuHome } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { TfiWrite } from "react-icons/tfi";
 import { RiAccountCircleLine } from "react-icons/ri";
+import { FaRegStar } from "react-icons/fa";
 
 const logout = async () => {
     const result = await deleteToken()
@@ -31,6 +32,13 @@ const items = [
         label: "Account",
         startContent: <RiAccountCircleLine />,
         description: "Navigate back to home"
+    },
+    {
+        key: 'brands-key',
+        href: "/dashboard/brands",
+        label: "Brands",
+        startContent: <FaRegStar />,
+        description: "See all your brands"
     },
     {
         key: 'projects-key',
