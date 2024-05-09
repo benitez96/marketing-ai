@@ -41,7 +41,6 @@ export default function UserProvider({ children }: Props) {
     const [currentBrand, setCurrentBrand] = useState<IBrand | null>(null)
     const [brands, setBrands] = useState<IBrand[]>([])
 
-
     useEffect(() => {
         const getUser = async () => {
             try {

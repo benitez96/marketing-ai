@@ -25,7 +25,7 @@ export default function Login() {
   const [isError, setIsError] = useState(false)
   const [pswVisible, setPswVisible] = useState(false)
 
-  const { handleUser } = useContext(UserContext)
+  const { handleUser, handleBrand } = useContext(UserContext)
 
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
@@ -40,6 +40,7 @@ export default function Login() {
 
     if (loginResponse.success) {
       handleUser(loggedUser)
+      handleBrand(loginResponse.brands[0].id)
       if (loggedUser.brands.length > 0) {
         api.interceptors.request.use(
           (config: any) => {
