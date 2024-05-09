@@ -41,6 +41,9 @@ class SessionService:
         self.input_repository = input_repository
         self.brand_repository = brand_repository
 
+    def get_sessions(self, user: User, brand: Optional[int] = None) -> list[Session]:
+        return self.session_repository.get_filtered_sessions(user, {"brand_id": brand})
+
     def get_session_detail(self, user: User, session_id: int) -> Session:
         session = self.session_repository.get(session_id)
 
