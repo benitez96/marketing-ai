@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from fastapi import APIRouter, Body, Depends
 from core.models import User
 from core.schemas.session import (
@@ -17,8 +17,11 @@ router = APIRouter()
 @router.get("/", response_model=list[SessionRead], summary="Get user sessions")
 async def get_sessions(
     user: Annotated[User, Depends(get_current_user)],
+    brand: Optional[int] = None,
+    session_service: SessionService = Depends(SessionService),
 ):
-    return user.sessions
+    sessions = session_service.get_sessions(user=user, brand=brand)
+    return sessions
 
 
 @router.post(
