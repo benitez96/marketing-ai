@@ -10,6 +10,8 @@ class InputType(str, Enum):
     select = "select"
     checkbox = "checkbox"
     radio = "radio"
+    date = "date"
+    scan = "scan"
 
 
 class Source(str, Enum):
