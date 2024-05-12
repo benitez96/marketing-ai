@@ -6,7 +6,7 @@ import { UserContext } from "providers/providers";
 import { Select, SelectItem } from "@nextui-org/react";
 
 
-export function SelectDropdown({ b: brands }: any) {
+export function SelectBrand({ brands }: any) {
     const router = useRouter()
     const { handleBrand, currentBrand, isLoading } = useContext(UserContext)
 
@@ -42,10 +42,8 @@ export function SelectDropdown({ b: brands }: any) {
                     {currentBrand === null ? 'loading' : currentBrand.name}
                 </SelectItem>
             </Select>}
-
-            <p className="text-small text-default-500">Selected: {currentBrand?.name}</p>
         </div>
     );
 }
 
-export default SelectDropdown;
+export default SelectBrand;

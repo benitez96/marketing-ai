@@ -4,6 +4,7 @@ import { LuLogOut } from "react-icons/lu";
 import { TfiWrite } from "react-icons/tfi";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { FaRegStar } from "react-icons/fa";
+import { AiOutlineMail } from "react-icons/ai";
 
 const logout = async () => {
     const result = await deleteToken()
@@ -41,11 +42,11 @@ const items = [
         description: "See all your brands"
     },
     {
-        key: 'projects-key',
+        key: 'emails-key',
         href: "/dashboard/projects",
-        label: "Projects",
-        startContent: <TfiWrite />,
-        description: "History of projects"
+        label: "Emails",
+        startContent: <AiOutlineMail />,
+        description: "Emails history"
     },
     {
         key: "logout-key",

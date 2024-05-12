@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/components/Listbox"
+    "src/app/components/listbox"
   ],
   "exclude": ["node_modules"]
 }
