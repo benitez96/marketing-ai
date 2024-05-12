@@ -70,7 +70,6 @@ export default function UserProvider({ children }: Props) {
         if (selectedBrand !== undefined) {
             setCurrentBrand(selectedBrand)
         }
-
     }, [currentBrand]);
 
     const handleUser = useCallback((user: IUser) => {

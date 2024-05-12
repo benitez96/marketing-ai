@@ -39,7 +39,7 @@ export function SelectBrand({ brands }: any) {
                         title: 'hidden'
                     }}
                 >
-                    {currentBrand === null ? 'loading' : currentBrand.name}
+                    {currentBrand === null ? 'loading' : currentBrand?.name}
                 </SelectItem>
             </Select>}
         </div>

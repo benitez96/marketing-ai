@@ -1,12 +1,13 @@
-import { CustomCard } from "@/components/custom-card/CustomCard";
 import { Projects } from "@/components/projects/Projects";
 import * as projectsServices from "@/services/server/projectServices";
-import { getUserCached } from "@/services/server/userService";
-import { revalidatePath } from "next/cache";
-import { TfiWrite } from "react-icons/tfi";
+import { redirect } from "next/navigation";
 
-export default async function Page({ params }: { params: { brandId: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
+  const brand = await projectsServices.getProjectsByBrandId(params.slug)
+  if (brand === null) {
+    return redirect('/dashboard/brands')
+  }
   return (
-    <Projects />
+    <Projects brand={brand} />
   )
 }

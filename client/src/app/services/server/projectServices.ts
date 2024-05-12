@@ -12,12 +12,11 @@ export const getProjects = async (): Promise<IProject[]> => {
     }
 }
 
-export const getProjectById = async (id: string) => {
+export const getProjectsByBrandId = async (id: string) => {
     try {
-        const { request } = new HttpService().get<IProject>(`chats/${id}`)
+        const { request } = new HttpService().get<IProject>(`brands/${id}`)
         return (await request).data
     } catch (error) {
-        handleAxiosError(error)
-        throw error
+        return handleAxiosError(error)
     }
 }

@@ -1,17 +1,17 @@
+"use client"
 import React from 'react'
-import { AiOutlineMail } from "react-icons/ai";
+import { FiPlusSquare } from "react-icons/fi";
+import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/breadcrumbs";
 
 import { CustomCard } from '../custom-card/CustomCard'
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-import { FiPlusSquare } from "react-icons/fi";
 
-export const Projects = () => {
+export const Projects = ({ brand }: any) => {
     return (
         <div>
-            <div className='flex items-center'>
-                <h1>Projects under</h1>
-                <MdOutlineKeyboardArrowRight />
-            </div>
+            <Breadcrumbs className='p-4'>
+                <BreadcrumbItem href='/dashboard/brands'>Brand</BreadcrumbItem>
+                <BreadcrumbItem>{brand.name}</BreadcrumbItem>
+            </Breadcrumbs>
 
             <CustomCard href={`/dashboard/generate/`} isAdd={true}>
                 <FiPlusSquare className='text-focus text-4xl' />

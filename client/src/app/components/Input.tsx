@@ -9,10 +9,8 @@ import { analyzeUrl } from '@/services/server/scrappingServices';
 import styles from './input.module.css'
 import { api } from '@/utils/axios';
 
-export const InputUrl = ({ setStep }: any) => {
+export const InputUrl = ({ continueCallBack,  cancelCallBack}: any) => {
     const [loading, setLoading] = useState(false)
-    const { logoutUser } = useContext(UserContext)
-
 
     const formik = useFormik({
         initialValues: {
@@ -37,9 +35,7 @@ export const InputUrl = ({ setStep }: any) => {
                 "best_selling_products": values.best_selling_products,
             }
             const response = (await api.post('/brands/', body))
-            if (response.status === 200) {
-                setStep(3)
-            }
+            continueCallBack(response)
         },
     });
 
@@ -151,7 +147,7 @@ export const InputUrl = ({ setStep }: any) => {
                 onChange={formik.handleChange}
                 value={formik.values.description}
             />
-            <Button onClick={logoutUser} color='default' className='rounded-md border text-rose-600 cursor-pointer p-2' type="submit">Cancel</Button>
+            <Button onClick={cancelCallBack} color='default' className='rounded-md border text-rose-600 cursor-pointer p-2' type="submit">Cancel</Button>
             <Button onClick={formik.submitForm} color='danger' className='rounded-md border text-white cursor-pointer p-2' type="submit">Continue</Button>
         </div>
     );

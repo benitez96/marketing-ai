@@ -1,11 +1,6 @@
-import { cache } from 'react'
-
-
-
-
 import Sidebar from "@/components/listbox/Sidebar";
-import SelectBrand from "@/components/brands/Brands";
-import { getBrands, getBrandsCache } from "@/services/server/brandServices";
+import SelectBrand from "@/components/select-brands/SelectBrands";
+import { getBrandsCache } from "@/services/server/brandServices";
 import { redirect } from "next/navigation";
 import React from 'react'
 import { Providers } from 'providers';

@@ -6,5 +6,8 @@ export const handleAxiosError = (error: unknown) => {
         if (error.response?.status === 401) {
             return redirect(`/login`, RedirectType.push)
         }
+        else if (error.response?.status === 404) {
+            return null
+        }
     }
 }
