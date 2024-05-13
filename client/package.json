@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.2.9",
+    "@nextui-org/react": "^2.3.6",
     "next": "14.2.0-canary.27",
     "puppeteer": "^22.6.0",
     "react": "^18",
