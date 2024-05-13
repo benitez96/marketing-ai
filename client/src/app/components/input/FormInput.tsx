@@ -1,10 +1,10 @@
 "use client"
+import { Input } from "@nextui-org/react";
+import { ChangeEvent } from "react";
 
 import { Types, IFormInput } from "interfaces/form"
 import { RadioInput } from "../radio-input/RadioInput"
 import SelectInput from "../select-input/SelectInput";
-import { Input } from "@nextui-org/react";
-import { ChangeEvent } from "react";
 
 interface Props {
     input: IFormInput;

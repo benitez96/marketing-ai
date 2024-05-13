@@ -9,7 +9,7 @@ import { analyzeUrl } from '@/services/server/scrappingServices';
 import styles from './input.module.css'
 import { api } from '@/utils/axios';
 
-export const InputUrl = ({ continueCallBack,  cancelCallBack}: any) => {
+export const CreateBrand = ({ continueCallBack,  cancelCallBack}: any) => {
     const [loading, setLoading] = useState(false)
 
     const formik = useFormik({
