@@ -12,11 +12,6 @@
     }
 }
 
-.background{
-    background-color: red;
-}
-
 .loading {
     animation: pulse 1s infinite !important;
-    /* Apply the animation */
 }

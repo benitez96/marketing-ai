@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios'
 import React, { useContext } from 'react'
 
-import { InputUrl } from '@/components/Input'
+import { CreateBrand } from '@/components/CreateBrand'
 import { UserContext } from 'providers/providers'
 
 export const Brand = ({ setStep }: any) => {
@@ -20,7 +20,7 @@ export const Brand = ({ setStep }: any) => {
 
   return (
     <div>
-      <InputUrl continueCallBack={cb} cancelCallBack={cancelCallBack} />
+      <CreateBrand continueCallBack={cb} cancelCallBack={cancelCallBack} />
     </div>
   )
 }

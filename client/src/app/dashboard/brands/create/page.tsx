@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
 
-import { InputUrl } from '@/components/Input';
+import { CreateBrand } from '@/components/CreateBrand';
 
 const CreateBrandPage = async () => {
     const router = useRouter()
@@ -19,7 +19,7 @@ const CreateBrandPage = async () => {
 
     return (
         <div>
-            <InputUrl continueCallBack={cb} cancelCallBack={cancelCallBack} />
+            <CreateBrand continueCallBack={cb} cancelCallBack={cancelCallBack} />
         </div>
     );
 }

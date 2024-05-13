@@ -17,7 +17,6 @@ const BrandsPage = async () => {
                 brands.map((brand: any) => {
                     return (
                         <CustomCard key={brand.id} href={`/dashboard/brands/${brand.id}`}>
-                            <FaRegStar className="text-4xl" />
                             <h3 className='text-lg font-semibold'>{brand.name}</h3>
                             <p className='text-slate-500'>Industry/Niche: {brand.niche}</p>
                             <p className='text-slate-500'>Audience: {brand.target_audience}</p>

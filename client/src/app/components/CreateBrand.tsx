@@ -1,15 +1,13 @@
 "use client"
-import React, { useContext, useState } from 'react'
-import { useFormik, useFormikContext } from 'formik';
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { CgEnter } from "react-icons/cg";
+import React, { useState } from 'react'
+import { useFormik } from 'formik';
+import { Button, Input } from "@nextui-org/react";
 
-import { UserContext } from "providers/providers";
-import { analyzeUrl } from '@/services/server/scrappingServices';
-import styles from './input.module.css'
+import styles from '../styles/input.module.css'
 import { api } from '@/utils/axios';
+import { ScanWebsite } from '@/components/scan-website/ScanWebsite';
 
-export const InputUrl = ({ continueCallBack,  cancelCallBack}: any) => {
+export const CreateBrand = ({ continueCallBack, cancelCallBack }: any) => {
     const [loading, setLoading] = useState(false)
 
     const formik = useFormik({
@@ -39,49 +37,9 @@ export const InputUrl = ({ continueCallBack,  cancelCallBack}: any) => {
         },
     });
 
-
-    const [isValidated, setIsValidated] = useState(true)
-
-    const fetchData = async () => {
-        // if (!validate(website.url)) {
-        //     return alert('Invalid Url')
-        // }
-        setLoading(true)
-        const analyzedWebsite = await analyzeUrl(formik.values.site_url)
-        formik.setFieldValue('name', analyzedWebsite.title)
-        formik.setFieldValue('description', analyzedWebsite.description)
-        setLoading(false)
-    }
-
-    const validate = (url: string) => {
-        const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
-        urlRegex.test(url)
-        setIsValidated(urlRegex.test(url))
-        return urlRegex.test(url)
-    }
-
     return (
         <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4 p-6">
-            <div className='flex flex-row items-center gap-4'>
-                <Input type="string" label="URL" placeholder="Enter your website url" value={formik.values.site_url} name='site_url' onChange={formik.handleChange} />
-
-                <Button className='text-white' color={`${isValidated ? 'primary' : 'default'}`} isLoading={loading} onClick={fetchData} disabled={isValidated ? false : true}>
-                    <p className='hidden md:block text-white'>Scan My Website</p>
-                    <CgEnter className='block text-white' style={{ width: '40px', height: '40px' }} />
-                </Button>
-
-            </div>
-            <Input
-                classNames={{
-                    inputWrapper: [loading && styles.loading]
-                }}
-                type="string"
-                label="Product/Service Name"
-                placeholder="Product/Service Name (Example: KangarooWriter)"
-                value={formik.values.name}
-                name='name'
-                onChange={formik.handleChange}
-            />
+            <ScanWebsite styles={styles} value={formik.values} loading={loading} handleChange={formik.handleChange} setLoading={setLoading} setFieldValue={formik.setFieldValue} />
             <Input
                 classNames={{
                     inputWrapper: [loading && styles.loading]
@@ -136,16 +94,6 @@ export const InputUrl = ({ continueCallBack,  cancelCallBack}: any) => {
                 value={formik.values.best_selling_products}
                 name='best_selling_products'
                 onChange={formik.handleChange}
-            />
-            <Textarea
-                classNames={{
-                    inputWrapper: [loading && styles.loading]
-                }}
-                label="Product/Service Description"
-                placeholder="Product/Service Description (Example: KangarooWriter is a tool for online marketers...)"
-                name='description'
-                onChange={formik.handleChange}
-                value={formik.values.description}
             />
             <Button onClick={cancelCallBack} color='default' className='rounded-md border text-rose-600 cursor-pointer p-2' type="submit">Cancel</Button>
             <Button onClick={formik.submitForm} color='danger' className='rounded-md border text-white cursor-pointer p-2' type="submit">Continue</Button>
