@@ -3,8 +3,9 @@
 import React, { useContext } from 'react'
 import { usePathname, useRouter } from 'next/navigation';
 import { Listbox, ListboxItem, Navbar, NavbarContent, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
-import { Link, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Link from 'next/link';
 
 import { UserContext } from "providers/providers";
 import items from './items';
@@ -56,7 +57,7 @@ const Sidebar = () => {
             </Navbar>
 
             <div className='hidden sm:block'>
-                <Button
+                {/* <Button
                     href="/dashboard/generate"
                     as={Link}
                     color="primary"
@@ -65,7 +66,13 @@ const Sidebar = () => {
                     endContent={<MdOutlineKeyboardArrowRight />}
                 >
                     Generate
-                </Button>
+                </Button> */}
+                <Link href="/dashboard/generate" className='bg-rose-600 p-2 flex w-[80%] text-white border rounded-xl text-center justify-center text-sm'>
+                    <div className='flex items-center'>
+                        Generate
+                        <MdOutlineKeyboardArrowRight />
+                    </div>
+                </Link>
                 <Listbox
                     items={items}
                     className='text-2xl'
