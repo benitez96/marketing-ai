@@ -1,6 +1,8 @@
 "use client"
 import { Input } from "@nextui-org/react";
 import { ChangeEvent } from "react";
+import { DateInput } from "@nextui-org/react";
+import { CalendarDate } from "@internationalized/date";
 
 import { Types, IFormInput } from "interfaces/form"
 import { RadioInput } from "../radio-input/RadioInput"
@@ -22,9 +24,15 @@ export const FormInput = ({ input, value, handleChange }: Props) => {
             return (
                 <SelectInput label={input.label} name={input.name} required={input.required} values={input.values} placeholder={input.placeholder} />
             )
-        case Types.Text:
+        case Types.TEXT:
             return (
                 <Input type="string" label={input.label} required={input.required} placeholder={input.placeholder} name={input.name} value={value} onChange={handleChange} />
+            )
+        case Types.DATE:
+            return (
+                <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                    <DateInput label={"Birth date"} placeholderValue={new CalendarDate(1995, 11, 6)} className="max-w-sm" />
+                </div>
             )
     }
 }
