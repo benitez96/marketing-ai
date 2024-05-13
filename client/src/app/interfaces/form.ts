@@ -1,7 +1,8 @@
 export enum Types {
     RADIO = 'radio',
     SELECT = 'select',
-    Text = 'text'
+    Text = 'text',
+    SCAN = 'scan'
 }
 
 export interface IFormInputValues {

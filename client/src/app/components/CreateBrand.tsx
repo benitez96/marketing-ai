@@ -39,7 +39,7 @@ export const CreateBrand = ({ continueCallBack, cancelCallBack }: any) => {
 
     return (
         <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4 p-6">
-            <ScanWebsite styles={styles} value={formik.values} loading={loading} handleChange={formik.handleChange} setLoading={setLoading} setFieldValue={formik.setFieldValue} />
+            <ScanWebsite value={formik.values} loading={loading} handleChange={formik.handleChange} setLoading={setLoading} setFieldValue={formik.setFieldValue} />
             <Input
                 classNames={{
                     inputWrapper: [loading && styles.loading]

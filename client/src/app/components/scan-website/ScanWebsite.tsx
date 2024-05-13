@@ -3,6 +3,7 @@ import { CgEnter } from 'react-icons/cg'
 import React from 'react'
 
 import { analyzeUrl } from '@/services/server/scrappingServices'
+import styles from '../../styles/input.module.css'
 
 interface Props {
     value: {
@@ -10,14 +11,13 @@ interface Props {
         site_url: string
         description: string
     }
-    loading: boolean
+    loading?: boolean
     handleChange: any
-    setLoading: any
+    setLoading?: any
     setFieldValue: any
-    styles: any
 }
 
-export const ScanWebsite = ({ value, loading, handleChange, setLoading, setFieldValue, styles }: Props) => {
+export const ScanWebsite = ({ value, loading, handleChange, setLoading, setFieldValue }: Props) => {
 
     const fetchData = async () => {
         if (!validate(value.site_url)) {

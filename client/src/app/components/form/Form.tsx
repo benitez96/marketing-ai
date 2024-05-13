@@ -8,12 +8,15 @@ import { api } from '@/utils/axios'
 import { Types } from "interfaces/form"
 import { EmailSubtype } from '../email-subtype/EmailSubtype'
 import { UserContext } from 'providers/providers'
+import { ScanWebsite } from '../scan-website/ScanWebsite'
 
 
 interface Props {
 }
 
 export const CreateForm = ({ }: Props) => {
+    const [loading, setLoading] = useState(false)
+
     const [inputs, setInputs] = useState([])
     const { currentBrand } = useContext(UserContext)
 
@@ -66,6 +69,16 @@ export const CreateForm = ({ }: Props) => {
             {
                 inputs.map((input: any) => {
                     if (Object.values(Types).includes(input.type)) {
+                        if (input.type === 'scan') {
+                            return <ScanWebsite
+                                loading={loading}
+                                setLoading={setLoading}
+                                value={formik.values as any}
+                                handleChange={formik.handleChange}
+                                setFieldValue={formik.setFieldValue}
+                                key={input.id}
+                            />
+                        }
                         return <FormInput key={input.name} input={input} handleChange={formik.handleChange} value={formik.values[input.name]} />
                     }
                     else {
