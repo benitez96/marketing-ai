@@ -21,7 +21,9 @@ class FormService:
         self.input_repository = input_repository
 
     def get_form(self, name: str) -> list[Input]:
-        return self.form_repository.get_by_name(name)
+        form = self.form_repository.get_form_detail(name)
+        form.inputs = [input for input in form.inputs if input.source == "user"]
+        return form
 
     def get_forms(self) -> list[Form]:
         return self.form_repository.get_public_forms()

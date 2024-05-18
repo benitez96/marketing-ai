@@ -1,4 +1,5 @@
 from typing import Type
+from sqlalchemy.orm import joinedload
 from fastapi import HTTPException
 from sqlmodel import select
 from core.models import Form, Input
@@ -39,3 +40,16 @@ class FormRepository(BaseRepository[Form]):
         if not result:
             raise HTTPException(status_code=404, detail="Form not found")
         return result
+
+    def get_form_detail(self, name: str) -> Form:
+        statement = (
+            select(Form)
+            .options(joinedload(Form.inputs))
+            .where(Form.name == name)
+        )
+        form = self.db.exec(statement).first()
+        if not form:
+            raise HTTPException(status_code=404, detail="Form not found")
+
+        return form
+
