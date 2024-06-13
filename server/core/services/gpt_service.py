@@ -24,25 +24,12 @@ class OpenAIService:
                 response=response.choices[0].message.content,
             )
 
-    async def get_stream(self, prompt):
+    async def get_stream(self, messages):
         stream = self.client.chat.completions.create(
             model=self.model,
             temperature=self.temperature,
             stream=True,
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a helpful assistant to make content for webmarketing. You are a chatbot with a friendly personality.",
-                },
-                {
-                    "role": "system",
-                    "content": f"Your reponses should have this format {self.response_format} in JSON",
-                },
-                {"role": "user", "content": prompt},
-            ],
+            messages=messages,
         )
-
         for chunk in stream:
-            if chunk.choices[0].delta.content is not None:
-                print(chunk.choices[0].delta.content, end="")
-                return chunk
+            yield chunk.choices[0].delta.content or ""

@@ -62,13 +62,13 @@ class SessionService:
 
         return self.session_repository.update(session_id, session)
 
-    def init_session(
+    async def init_session(
         self,
         user: User,
         brand_id: int,
         form_slug: str,
         initial_conf: dict[str, str],
-    ) -> Session:
+    ):
         model = self.aimodel_repository.get_by_name(settings.gpt_model)
         brand = self.brand_repository.get_brand(user, brand_id)
         inputs = self.input_repository.get_form_inputs(form_slug)
@@ -90,9 +90,15 @@ class SessionService:
             model.name,
         )
 
-        prompt = gpt.get_response(messages)
+        stream_content = []
+        async for chunk in gpt.get_stream(messages):
+            stream_content.append(chunk)
+            yield chunk
 
-        res = eval(prompt.response)
+        full_response = ''.join(stream_content)
+
+
+        res = eval(full_response)
 
         session = Session(
             user=user,
@@ -100,10 +106,18 @@ class SessionService:
             description=res.get("description", ""),
             brand=brand,
             config=initial_conf,
-            prompts=[Prompt(**prompt.model_dump(), ai_model=model)],
+            prompts=[
+                Prompt(
+                    input_tokens=len(messages),
+                    output_tokens=len(full_response),
+                    prompt=str(messages),
+                    response=full_response,
+                    ai_model=model
+                )
+            ]
         )
 
-        return self.session_repository.create(session)
+        self.session_repository.create(session)
 
     def analyze_metadata(
         self,

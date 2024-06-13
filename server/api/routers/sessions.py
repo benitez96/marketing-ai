@@ -1,5 +1,7 @@
+import asyncio
 from typing import Annotated, Optional
 from fastapi import APIRouter, Body, Depends
+from fastapi.responses import StreamingResponse
 from core.models import User
 from core.schemas.session import (
     AnalyzedMetadata,
@@ -37,9 +39,14 @@ async def generate_prompt(
     session_service: SessionService = Depends(SessionService),
     config: dict[str, str],
 ):
-    return session_service.init_session(
-        user=user, brand_id=brand_id, initial_conf=config, form_slug=form_slug
-    )
+    async def stream():
+        async for chunk in session_service.init_session(
+            user, brand_id, form_slug, config
+        ):
+            # await asyncio.sleep(1)
+            yield chunk
+
+    return StreamingResponse(stream(), media_type="text/event-stream")
 
 
 @router.patch(

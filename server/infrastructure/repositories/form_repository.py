@@ -43,13 +43,10 @@ class FormRepository(BaseRepository[Form]):
 
     def get_form_detail(self, name: str) -> Form:
         statement = (
-            select(Form)
-            .options(joinedload(Form.inputs))
-            .where(Form.name == name)
+            select(Form).options(joinedload(Form.inputs)).where(Form.name == name)
         )
         form = self.db.exec(statement).first()
         if not form:
             raise HTTPException(status_code=404, detail="Form not found")
 
         return form
-

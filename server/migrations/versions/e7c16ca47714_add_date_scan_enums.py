@@ -1,4 +1,5 @@
 import sqlmodel
+
 """add date/scan enums
 
 Revision ID: e7c16ca47714
@@ -13,8 +14,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e7c16ca47714'
-down_revision: Union[str, None] = '4b4df39f15e6'
+revision: str = "e7c16ca47714"
+down_revision: Union[str, None] = "4b4df39f15e6"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
